@@ -2,7 +2,7 @@
 
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray, UseFormReturn } from "react-hook-form"
+import { useForm, useFieldArray, UseFormReturn, FieldErrors } from "react-hook-form"
 import {
     Form,
     FormControl,
@@ -393,8 +393,8 @@ export default function AddNewUserForm() {
 
     }
 
-    function onError(errors) {
-        console.log("❌ Form validation errors:", errors)
+    function onError(error: FieldErrors<ProductFormValues>) {
+        console.log("❌ Form validation errors:", error)
         console.log("🔍 Form state:", form.formState)
     }
 
