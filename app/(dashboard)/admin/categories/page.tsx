@@ -6,6 +6,8 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
 import { redirect } from 'next/navigation';
 import { can } from '@/lib/auth/check-permission';
 import { Category } from '@/types/type';
+export const dynamic = "force-dynamic";
+
 
 export default async function page() {
 

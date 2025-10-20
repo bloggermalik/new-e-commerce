@@ -5,6 +5,8 @@ import getQueryClient from '../provider/get-query-client';
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
 import { redirect } from 'next/navigation';
 import { can } from '@/lib/auth/check-permission';
+export const dynamic = "force-dynamic";
+
 
 export default async function page() {
   const session = await getSession();
