@@ -24,6 +24,7 @@ import { useParams, useRouter } from "next/navigation"
 import { IconCategory2 } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import { User } from "@/types/type"
+import { getErrorMessage } from "@/components/ui/get-error-message"
 
 // FORM Z SCHEMA FOR ZOD
 
@@ -103,7 +104,8 @@ export default function UpdateUserForm() {
                     })
                 }
             } catch (error) {
-                toast.error("Failed to load category", error)
+                const message = getErrorMessage(error)
+                toast.error(message || "Failed to load category")
             } finally {
                 setLoading(false)
             }

@@ -26,6 +26,7 @@ import { Separator } from "@/components/ui/separator"
 import { User } from "@/types/type"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
+import { getErrorMessage } from "@/components/ui/get-error-message"
 
 // FORM Z SCHEMA FOR ZOD
 
@@ -116,7 +117,8 @@ export default function UpdateCouponForm() {
                     });
                 }
             } catch (error) {
-                toast.error("Failed to load category",error)
+                const message = getErrorMessage(error)
+                toast.error(message || "Failed to load category")
             } finally {
                 setLoading(false)
             }

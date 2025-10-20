@@ -112,7 +112,8 @@ export default function UpdateCategoryForm() {
                     })
                 }
             } catch (error) {
-                toast.error("Failed to load category",error)
+                const message = getErrorMessage(error)
+                toast.error(message || "Failed to load category")
             } finally {
                 setLoading(false)
             }
