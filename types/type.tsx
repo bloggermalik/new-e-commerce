@@ -58,9 +58,9 @@ export type SessionUser = {
   name: string;
   email: string;
   emailVerified: boolean;
-  image?: string; // optional
+  image?: string | null;
   role: Role; // required
-  banned: boolean;
+  banned: boolean | null;
   banReason?: string | null;
   banExpires?: Date | null;
   createdAt: Date;
@@ -74,7 +74,7 @@ export type Session = {
     expiresAt: Date;
     createdAt: Date;
     updatedAt: Date;
-    ipAddress?: string;
+    ipAddress?: string | null;
     userAgent?: string;
     userId: string;
     impersonatedBy?: string | null;

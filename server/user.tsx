@@ -52,9 +52,16 @@ export const getSession = async (): Promise<Session | undefined> => {
 
     return {
       ...session,
-      user: {
+      session: {
+        ...session.session,
+        ipAddress: session.session.ipAddress ?? null, 
+        userAgent: session.session.userAgent ?? undefined, 
+      },
+        user: {
         ...session.user,
-        role: session.user.role as Role, // cast string to enum type
+        role: session.user.role as Role, 
+        banned: session.user.banned ?? null,
+
       },
     };
   } catch (error) {
