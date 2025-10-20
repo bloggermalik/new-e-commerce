@@ -15,12 +15,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { createCategory, createCoupon } from "@/server/user"
-import { useState } from "react"
-import { ChevronDownIcon, Loader2, Trash2, UploadCloudIcon } from "lucide-react"
+import {  createCoupon } from "@/server/user"
+import { ChevronDownIcon, Loader2,} from "lucide-react"
 import { toast } from "sonner"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { uploadToImageKit } from "./image-kit-upload"
 import {
     Popover,
     PopoverContent,
@@ -44,9 +42,6 @@ export const formSchema = z.object({
 });
 
 export default function AddNewCouponForm() {
-    const [open, setOpen] = useState(false)
-    const [date, setDate] = useState<Date | undefined>(undefined)
-    const [loading, setLoading] = useState(false);
     const queryClient = useQueryClient()
 
     const mutation = useMutation({
@@ -55,12 +50,10 @@ export default function AddNewCouponForm() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["coupons"] })
             toast.success("Coupon created successfully")
-            setLoading(false);
             form.reset();
         },
-        onError: (error: any) => {
+        onError: (error) => {
             toast.error(error?.message || "Something went wrong")
-            setLoading(false);
         }
     })
 
@@ -223,7 +216,6 @@ export default function AddNewCouponForm() {
                                                     captionLayout="dropdown"
                                                     onSelect={(date) => {
                                                         field.onChange(date); // ✅ update form state
-                                                        setOpen(false);
                                                     }}
                                                 />
                                             </PopoverContent>

@@ -1,7 +1,7 @@
 "use client"
 
-import { deleteCategory, deleteProduct } from "@/server/user"
-import { Category, Product } from "@/types/type"
+import { deleteProduct } from "@/server/user"
+import {  Product } from "@/types/type"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 

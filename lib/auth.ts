@@ -4,7 +4,6 @@ import { db } from "@/db/drizzle"; // your drizzle instance
 import { nextCookies } from "better-auth/next-js";
 import { schema } from "@/db/schema"
 import { eq } from "drizzle-orm";
-import { organization } from "better-auth/plugins"
 import { admin as adminPlugin } from "better-auth/plugins"
 import { ac, admin, user, moderator } from "@/lib/auth/permission";
 
@@ -22,7 +21,7 @@ export type UserType = {
 
 export const auth = betterAuth({
     emailVerification: {
-		sendVerificationEmail: async ({ user, url, token }) => {
+		sendVerificationEmail: async ({  }) => {
 			// Send verification email to user
 		},
 		sendOnSignUp: true,

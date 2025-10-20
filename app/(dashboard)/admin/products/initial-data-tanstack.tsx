@@ -4,13 +4,11 @@
 import { useQuery } from "@tanstack/react-query"
 import { DataTable } from "./data-table"
 import { columns } from "./columns"
-import { getCategory, getProducts, getUser } from "@/server/user"
+import {  getProducts } from "@/server/user"
 import { Loader2 } from "lucide-react"
-import { Category, Product } from "@/types/type"
+import {  Product } from "@/types/type"
 
-async function fetchCategories() { 
-  return await getCategory() 
-}
+
 
 export default function InitialDataTanstack({ canUpdate, canDelete, canView, canCreate }: { canUpdate: boolean; canDelete: boolean; canView: boolean; canCreate: boolean }) {
   const { data, isLoading, isError } = useQuery<Product[]>({

@@ -9,9 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { signUp } from "@/server/user"
-import { email, z } from "zod"
+import {  z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import {
@@ -25,7 +24,6 @@ import {
 } from "@/components/ui/form"
 import { Loader2 } from "lucide-react"
 import { toast } from "sonner"
-import { tr } from "zod/v4/locales"
 
 const formSchema = z.object({
   name:z.string().min(2),

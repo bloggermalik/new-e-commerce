@@ -2,9 +2,7 @@
 
 import * as React from "react"
 import { useTheme } from "next-themes"
-import { Button } from "@/components/ui/button"
 import { Switch } from "./ui/switch"
-import { Label } from "./ui/label"
 
 export function ModeToggle() {
   const { theme, setTheme } = useTheme()

@@ -6,7 +6,6 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
 import { redirect } from 'next/navigation';
 import { can } from '@/lib/auth/check-permission';
 import {  Product } from '@/types/type';
-import Link from 'next/link';
 
 export default async function page() {
 

@@ -26,11 +26,10 @@ import {
 import { Edit, MoreHorizontal, Trash2 } from "lucide-react"
 import { ArrowUpDown } from "lucide-react"
 import Image from "next/image"
-import { Category, Product } from "@/types/type"
+import {  Product } from "@/types/type"
 import { useDeleteProduct } from "./useDeleteProduct"
 import Link from "next/link"
-import { toast } from "sonner"
-import { can } from "@/lib/auth/check-permission"
+
 import { Badge } from "@/components/ui/badge"
 
 
@@ -39,7 +38,10 @@ import { Badge } from "@/components/ui/badge"
 
 export const columns = (
   { canUpdate, canDelete, canView, canCreate }: { canUpdate: boolean; canDelete: boolean; canView: boolean; canCreate: boolean }
-): ColumnDef<Product>[] => [
+): ColumnDef<Product>[] => {
+  console.log("canview canCreeate", canView, canCreate);
+  
+  return[
     {
       id: "select",
       size: 40, // 👈 narrow fixed width
@@ -233,7 +235,17 @@ export const columns = (
       id: "actions",
       cell: ({ row }) => {
         const product = row.original
-        const { mutate: deleteProduct, isPending } = useDeleteProduct()
+        return(
+          <DeleteProduct product={product} canUpdate={canUpdate} canDelete={canDelete}/>
+        )
+       
+      },
+    },
+
+  ]}
+
+  export function DeleteProduct( { product, canUpdate, canDelete }: { product: Product, canUpdate: boolean, canDelete: boolean }) {
+     const { mutate: deleteProduct, isPending } = useDeleteProduct()
 
         return (
           <DropdownMenu>
@@ -294,7 +306,4 @@ export const columns = (
           </DropdownMenu>
 
         )
-      },
-    },
-
-  ]
+  }

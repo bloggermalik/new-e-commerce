@@ -1,6 +1,4 @@
 'use client';
-
-import { useState } from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '../ui/dropdown-menu';
 import { ChevronDown, Logs, MessageSquareMore, User, Users } from 'lucide-react';

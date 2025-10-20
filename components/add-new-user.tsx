@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog"
 import AddNewUserForm from './add-new-user-form'
 import { Separator } from './ui/separator'
-import { User, UserPlus } from 'lucide-react'
+import {  UserPlus } from 'lucide-react'
 
 
 function AddNewUser() {

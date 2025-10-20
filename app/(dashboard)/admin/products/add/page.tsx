@@ -2,7 +2,7 @@
 
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray } from "react-hook-form"
+import { useForm, useFieldArray, UseFormReturn } from "react-hook-form"
 import {
     Form,
     FormControl,
@@ -18,7 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChipsTag } from "@/components/chips-tag"
-import { DollarSign, Package, Plus, Settings, Tags, FileText, ListChecks, Trash, UploadCloud, UploadCloudIcon, Loader2, SeparatorVertical } from "lucide-react"
+import { DollarSign, Package, Plus, Settings, Tags, FileText, ListChecks, Trash, UploadCloudIcon, Loader2,  } from "lucide-react"
 import { useEffect, useState } from "react"
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
 import { uploadToImageKit } from "@/components/image-kit-upload"
@@ -26,6 +26,7 @@ import { toast } from "sonner"
 import { createProduct, getCategory } from "@/server/user"
 import { Category } from "@/types/type"
 import AddNewCategory from "@/components/add-new-category"
+import Image from "next/image"
 
 
 
@@ -52,8 +53,10 @@ const formSchema = z.object({
 })
 
 
-
-function VariantEditor({ index, form, removeVariant }: { index: number; form: any; removeVariant: (idx: number) => void }) {
+type ProductFormValues = z.infer<typeof formSchema>;
+function VariantEditor({ index, form, removeVariant }: { index: number; form: UseFormReturn<ProductFormValues>; removeVariant: (idx: number) => void }) {
+    const [files, setFiles] = useState<File[]>([]);
+    const [isUploading, setIsUploading] = useState(false);
     const { control } = form
     const { fields: attributeFields, append: appendAttribute, remove: removeAttribute } = useFieldArray({
         control,
@@ -182,8 +185,7 @@ function VariantEditor({ index, form, removeVariant }: { index: number; form: an
                     control={form.control}
                     name={`variants.${index}.images`}
                     render={({ field }) => {
-                        const [files, setFiles] = useState<File[]>([]);
-                        const [isUploading, setIsUploading] = useState(false);
+                     
 
                         const handleUpload = async () => {
                             if (!files.length) return;
@@ -266,7 +268,9 @@ function VariantEditor({ index, form, removeVariant }: { index: number; form: an
                                                         key={i}
                                                         className="w-24 h-24 rounded-md overflow-hidden border border-muted-foreground/20 relative"
                                                     >
-                                                        <img
+                                                        <Image
+                                                            width={50}
+                                                            height={50}
                                                             src={url}
                                                             alt={`uploaded-${i}`}
                                                             className="w-full h-full object-cover"
@@ -389,7 +393,7 @@ export default function AddNewUserForm() {
 
     }
 
-    function onError(errors: any) {
+    function onError(errors) {
         console.log("❌ Form validation errors:", errors)
         console.log("🔍 Form state:", form.formState)
     }

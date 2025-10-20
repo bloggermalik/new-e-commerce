@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { createUser } from "@/server/user"
-import { useState } from "react"
 import { Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -32,7 +31,6 @@ const formSchema = z.object({
 
 
 export default function AddNewUserForm() {
-
     const queryClient = useQueryClient()
 
     const mutation = useMutation({
@@ -44,16 +42,13 @@ export default function AddNewUserForm() {
             }
             toast.success("User created successfully")
             queryClient.invalidateQueries({ queryKey: ["users"] })
-            setLoading(false);
             form.reset();
         },
         onError: (error: Error) => {
             toast.error(error?.message || "Something went wrong")
-            setLoading(false);
         }
     })
 
-    const [loading, setLoading] = useState(false);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {

@@ -23,7 +23,7 @@ import {
   AlertDialogAction,
 } from "@/components/alert-dialog"
 
-import { Edit, MoreHorizontal, Trash2, UserCheck, UserRound, UserRoundCog, UsersRound } from "lucide-react"
+import { Edit, MoreHorizontal, Trash2, UserCheck, UserRound, UsersRound } from "lucide-react"
 import { ArrowUpDown } from "lucide-react"
 import { useDeleteUser } from "@/app/(dashboard)/admin/newuser/useDeleteUser"
 import Image from "next/image"
@@ -31,7 +31,10 @@ import { User } from "@/types/type"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 
-export const columns=({ canUpdate, canDelete, canView,canCreate }: { canUpdate: boolean; canDelete: boolean; canView: boolean , canCreate: boolean}): ColumnDef<User>[] => [
+export const columns=({ canUpdate, canDelete, canView,canCreate }: { canUpdate: boolean; canDelete: boolean; canView: boolean , canCreate: boolean}): ColumnDef<User>[] => {
+  console.log("canView and canCreate", canView, canCreate);
+  
+  return[
   {
     id: "select",
     header: ({ table }) => (
@@ -186,7 +189,18 @@ export const columns=({ canUpdate, canDelete, canView,canCreate }: { canUpdate: 
     id: "actions",
     cell: ({ row }) => {
       const user = row.original
-      const { mutate: deleteUser, isPending } = useDeleteUser()
+      return (
+        <div className="">
+          <DeleteUser user={user} canDelete={canDelete} canUpdate={canUpdate}/>
+        </div>)
+     
+    },
+  },
+
+]}
+
+function DeleteUser({ user, canDelete, canUpdate }: { user: User; canDelete: boolean; canUpdate: boolean }) {
+   const { mutate: deleteUser, isPending } = useDeleteUser()
 
       return (
         <DropdownMenu>
@@ -243,7 +257,4 @@ export const columns=({ canUpdate, canDelete, canView,canCreate }: { canUpdate: 
         </DropdownMenu>
 
       )
-    },
-  },
-
-]
+}

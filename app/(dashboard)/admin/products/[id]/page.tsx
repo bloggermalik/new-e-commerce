@@ -18,15 +18,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChipsTag } from "@/components/chips-tag"
-import { DollarSign, Package, Plus, Settings, Tags, FileText, ListChecks, Trash, UploadCloud, UploadCloudIcon, Loader2, SendToBack } from "lucide-react"
+import { DollarSign, Package, Plus, Settings, Tags, FileText, ListChecks, Trash,  UploadCloudIcon, Loader2, SendToBack } from "lucide-react"
 import { useEffect, useState } from "react"
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
 import { uploadToImageKit } from "@/components/image-kit-upload"
 import { toast } from "sonner"
-import { createProduct, getCategory, getProducts, getProductWithCategory, updateProduct } from "@/server/user"
-import { Category, NewProductVariant, Product } from "@/types/type"
+import {  getCategory,  getProductWithCategory, updateProduct } from "@/server/user"
+import { Category,  Product } from "@/types/type"
 import { useParams, useRouter } from "next/navigation"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import Image from "next/image"
 
 
 
@@ -54,7 +55,9 @@ const formSchema = z.object({
 
 
 
-function VariantEditor({ index, form, removeVariant }: { index: number; form: any; removeVariant: (idx: number) => void }) {
+function VariantEditor({ index, form, removeVariant }: { index: number; form ; removeVariant: (idx: number) => void }) {
+    const [files, setFiles] = useState<File[]>([]);
+    const [isUploading, setIsUploading] = useState(false);
     const { control } = form
     const { fields: attributeFields, append: appendAttribute, remove: removeAttribute } = useFieldArray({
         control,
@@ -183,8 +186,7 @@ function VariantEditor({ index, form, removeVariant }: { index: number; form: an
                     control={form.control}
                     name={`variants.${index}.images`}
                     render={({ field }) => {
-                        const [files, setFiles] = useState<File[]>([]);
-                        const [isUploading, setIsUploading] = useState(false);
+                    
 
                         const handleUpload = async () => {
                             if (!files.length) return;
@@ -267,7 +269,9 @@ function VariantEditor({ index, form, removeVariant }: { index: number; form: an
                                                         key={i}
                                                         className="w-24 h-24 rounded-md overflow-hidden border border-muted-foreground/20 relative"
                                                     >
-                                                        <img
+                                                        <Image
+                                                            width={50}
+                                                            height={50}
                                                             src={url}
                                                             alt={`uploaded-${i}`}
                                                             className="w-full h-full object-cover"
@@ -371,19 +375,13 @@ export default function UpdateProductForm() {
                    }
                 },
         
-            onError: (error: any) => {
+            onError: (error) => {
                 toast.error(error?.message || "Something went wrong")
                 setLoading(false);
             }
         })
 
     const [categories, setCategories] = useState<Category[]>([]);
-    const [activeCategory, setActiveCategory] = useState<Category | null>(null);
-    const [product, setProduct] = useState<any>(null);
-
-
-   
-
     const [loading, setLoading] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -400,7 +398,7 @@ export default function UpdateProductForm() {
     }
 
 
-    function onError(errors: any) {
+    function onError(errors) {
         console.log("❌ Form validation errors:", errors)
         console.log("🔍 Form state:", form.formState)
     }
@@ -420,14 +418,14 @@ export default function UpdateProductForm() {
                            isActive: product.isActive ?? true,
                             categoryId: product.categoryId || "",
                            tags: product.tags || [],
-                           variants: product.variants.map((variant: any) => ({
+                           variants: product.variants.map((variant: { sellPrice: number; costPrice: number; stock: number; isActive: boolean; images: string[]; productId: string; attributes: { name: string; value: string }[]}) => ({
                                sellPrice: variant.sellPrice,
                                costPrice: variant.costPrice,
                                stock: variant.stock,
                                isActive: variant.isActive ?? true,
                                images: variant.images || [],
                                productId: variant.productId || "",
-                               attributes: (variant.attributes || []).map((attr: any) => ({
+                               attributes: (variant.attributes || []).map((attr: { name: string; value: string }) => ({
                                      name: attr.name,
                                      value: attr.value,
                                     }))
@@ -435,8 +433,8 @@ export default function UpdateProductForm() {
                             })) || [],
                        })
                    }
-               } catch (err) {
-                   toast.error("Failed to load product")
+               } catch (error) {
+                   toast.error("Failed to load product",error)
                } finally {
                    setLoading(false)
                }
@@ -450,8 +448,8 @@ useEffect(() => {
     try {
       const category = await getCategory();
       setCategories(category);
-    } catch (err) {
-      toast.error("Failed to load categories");
+    } catch (error) {
+      toast.error("Failed to load categories",error);
     }
   }
   fetchCategories();

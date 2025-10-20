@@ -3,9 +3,8 @@ import React, { Suspense } from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link'
 import { LogoutButton } from "./logout-button-client"
-import { ChevronDown, LogInIcon } from 'lucide-react'
+import {  LogInIcon } from 'lucide-react'
 import { Skeleton } from "./ui/skeleton"
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import AvatarDropdownClient from './ui/avatar-dropdown-client'
 
 

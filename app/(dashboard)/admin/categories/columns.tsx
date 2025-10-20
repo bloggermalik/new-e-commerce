@@ -37,7 +37,10 @@ import { Badge } from "@/components/ui/badge"
 
 export const columns = (
   { canUpdate, canDelete, canView }: { canUpdate: boolean; canDelete: boolean; canView: boolean }
-): ColumnDef<Category>[] => [
+): ColumnDef<Category>[] => {
+  console.log("Your view is",canView);
+  
+  return [
     {
       id: "select",
       header: ({ table }) => (
@@ -149,9 +152,25 @@ export const columns = (
       id: "actions",
       cell: ({ row }) => {
         const category = row.original
-        const { mutate: deleteCategory, isPending } = useDeleteCategory()
 
         return (
+          <div className="flex items-center gap-2">
+            <DeleteCategory category={category} canUpdate={canUpdate} canDelete={canDelete}/>
+          </div>
+        )
+
+       
+      },
+    },
+
+  ] }
+
+
+
+  function DeleteCategory({ category, canUpdate, canDelete }: { category: Category; canUpdate: boolean; canDelete: boolean }) {
+      const { mutate: deleteCategory, isPending } = useDeleteCategory()
+
+     return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
@@ -210,7 +229,4 @@ export const columns = (
           </DropdownMenu>
 
         )
-      },
-    },
-
-  ]
+  }

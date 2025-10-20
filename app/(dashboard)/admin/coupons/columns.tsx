@@ -33,7 +33,10 @@ import { Badge } from "@/components/ui/badge"
 
 export const columns = (
   { canUpdate, canDelete, canView, canCreate }: { canUpdate: boolean; canDelete: boolean; canView: boolean; canCreate: boolean }
-): ColumnDef<Coupon>[] => [
+): ColumnDef<Coupon>[] => {
+  console.log("canView and canCreate is", canView, canCreate);
+  
+  return [
     {
       id: "select",
       header: ({ table }) => (
@@ -194,7 +197,7 @@ export const columns = (
       },
     },
 
-  ]
+  ]}
 
 function CouponActions({ coupon, canUpdate, canDelete }: { coupon: Coupon; canUpdate: boolean; canDelete: boolean }) {
   const { mutate: deleteCoupon, isPending } = useDeleteCoupon();

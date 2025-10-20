@@ -50,6 +50,8 @@ export function DataTable<TData, TValue>({
   data,
   canUpdate, canDelete, canView, canCreate
 }: DataTableProps<TData, TValue>) {
+  console.log("canUpdate, canDelete, canView", canUpdate, canDelete, canView);
+  
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []

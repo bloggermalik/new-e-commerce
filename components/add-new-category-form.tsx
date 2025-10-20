@@ -21,6 +21,7 @@ import { Loader2, Trash2, UploadCloudIcon } from "lucide-react"
 import { toast } from "sonner"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { uploadToImageKit } from "./image-kit-upload"
+import Image from "next/image"
 
 
 
@@ -40,8 +41,9 @@ const formSchema = z.object({
 
 
 export default function AddNewCategoryForm() {
+     const [files, setFiles] = useState<File[]>([]);
+    const [isUploading, setIsUploading] = useState(false);
     
-    const [loading, setLoading] = useState(false);
     const queryClient = useQueryClient()
 
     const mutation = useMutation({
@@ -53,12 +55,10 @@ export default function AddNewCategoryForm() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["categories"] })
             toast.success("Category created successfully")
-            setLoading(false);
             form.reset();
         },
-        onError: (error: any) => {
+        onError: (error) => {
             toast.error(error?.message || "Something went wrong")
-            setLoading(false);
         }
     })
 
@@ -158,8 +158,7 @@ export default function AddNewCategoryForm() {
                         control={form.control}
                         name="image"
                         render={({ field }) => {
-                            const [files, setFiles] = useState<File[]>([]);
-                            const [isUploading, setIsUploading] = useState(false);
+                           
 
                             const handleUpload = async () => {
                                 if (!files.length) return;
@@ -168,8 +167,6 @@ export default function AddNewCategoryForm() {
                                 setIsUploading(true);
 
                                 try {
-                                    const uploadedUrls: string[] = [];
-
                                     for (const file of files) {
                                         const res = await uploadToImageKit(file);
                                         if (res.url && res.fileId)
@@ -271,7 +268,9 @@ export default function AddNewCategoryForm() {
                                                         </button>
 
                                                         {/* Image */}
-                                                        <img
+                                                        <Image
+                                                        width={50}
+                                                        height={50}
                                                         src={field.value.url  }
                                                         alt="uploaded"
                                                         className="h-24 w-24 object-cover rounded-md" // reduced size

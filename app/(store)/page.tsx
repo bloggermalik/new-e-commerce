@@ -7,11 +7,6 @@ async function page() {
 
   const products = await getProducts()
   console.log("Products are", products[0].variants);
-
-  const sellPrice = products[0].variants[0].sellPrice
-  const costPrice = products[0].variants[0].costPrice
-  const discount =
-  costPrice > 0 ? ((costPrice - sellPrice) / costPrice) * 100 : 0;
   return (
     <div className="flex justify-center p-3">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6 justify-items-center">
@@ -19,8 +14,7 @@ async function page() {
         // Discount calculation
         const sellPrice = product.variants[0].sellPrice
         const costPrice = product.variants[0].costPrice
-        const discount =
-        costPrice > 0 ? ((costPrice - sellPrice) / costPrice) * 100 : 0;  
+        const discount = costPrice > 0 ? ((costPrice - sellPrice) / costPrice) * 100 : 0;  
         return (
           <div key={product.id}>
             <div key={product.id} className="bg-white shadow-md p-4 w-[200px]  flex items-center justify-center text-lg font-semibold rounded-lg">

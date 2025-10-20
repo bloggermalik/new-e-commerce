@@ -21,7 +21,7 @@ import { ArrowLeft, Loader2,  } from "lucide-react"
 import { toast } from "sonner"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useParams, useRouter } from "next/navigation"
-import { IconCategory2, IconClearAll } from "@tabler/icons-react"
+import { IconCategory2 } from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
 import { User } from "@/types/type"
 
@@ -63,7 +63,7 @@ export default function UpdateUserForm() {
         },
 
 
-        onError: (error: any) => {
+        onError: (error) => {
             toast.error(error?.message || "Something went wrong")
             setLoading(false);
         }
@@ -102,8 +102,8 @@ export default function UpdateUserForm() {
                         
                     })
                 }
-            } catch (err) {
-                toast.error("Failed to load category")
+            } catch (error) {
+                toast.error("Failed to load category", error)
             } finally {
                 setLoading(false)
             }

@@ -1,6 +1,7 @@
 "use client"
 
 import { deleteUser } from "@/server/user"
+import { User } from "@/types/type"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 
@@ -15,9 +16,9 @@ export function useDeleteUser() {
     onMutate: async (id: string) => {
       await queryClient.cancelQueries({ queryKey: ["users"] })
 
-      const prevUsers = queryClient.getQueryData<any[]>(["users"])
+      const prevUsers = queryClient.getQueryData<User[]>(["users"])
 
-      queryClient.setQueryData<any[]>(["users"], (old) =>
+      queryClient.setQueryData<User[]>(["users"], (old) =>
         old ? old.filter((u) => u.id !== id) : []
       )
 

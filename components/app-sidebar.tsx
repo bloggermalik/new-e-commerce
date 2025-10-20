@@ -5,20 +5,16 @@ import {
   IconBrandProducthunt,
   IconCamera,
   IconCategory2,
-  IconChartBar,
-  IconCylinderPlus,
+ 
   IconDashboard,
   IconDatabase,
   IconDiscount2,
-  IconDiscount2Off,
   IconFileAi,
   IconFileDescription,
   IconFileWord,
-  IconFolder,
   IconHelp,
   IconHome,
   IconInnerShadowTop,
-  IconListDetails,
   IconReport,
   IconSearch,
   IconSettings,
@@ -36,7 +32,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { WalletCards } from 'lucide-react';
 import Link from "next/link"
 
 const data = {

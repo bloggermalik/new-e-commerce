@@ -9,9 +9,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import AddNewUserForm from './add-new-user-form'
 import AddNewCategoryForm from './add-new-category-form'
-import { IconAdFilled, IconColumnInsertLeft } from '@tabler/icons-react'
 import { SquarePlus } from 'lucide-react'
 
 

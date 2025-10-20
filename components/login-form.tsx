@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { signIn, signUp } from "@/server/user"
+import { signIn,  } from "@/server/user"
 import {  z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -60,13 +60,13 @@ export function LoginForm({
  const signInWithGoogle = async () => {
     try {
       setIsGoogleLoading(true) // Set loading state before Google sign-in
-      const data = await authClient.signIn.social({
+       await authClient.signIn.social({
         provider: "google",
         callbackURL: "/dashboard"
       });
       toast.success("Please wait...")
     } catch (error) {
-      toast.error("Google sign-in failed")
+      toast.error("Google sign-in failed",error)
     } finally {
       setIsGoogleLoading(false) // Reset loading state after completion
     }

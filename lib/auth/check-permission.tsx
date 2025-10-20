@@ -1,11 +1,12 @@
 // utils/permissions.ts
 import { auth } from "@/lib/auth"
+import { Session } from "@/types/type"
 
 type Permission = {
   [resource: string]: string[]
 }
 
-export async function can(session: any, permission: Permission): Promise<boolean> {
+export async function can(session: Session, permission: Permission): Promise<boolean> {
   if (!session?.session?.userId) return false
 
   try {

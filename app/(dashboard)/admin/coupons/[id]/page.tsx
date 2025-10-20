@@ -15,15 +15,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import {  getCategoryById, getCouponById, getUserById, updateCategory, updateCoupon, updateUser } from "@/server/user"
+import {   getCouponById,  updateCoupon } from "@/server/user"
 import {  useEffect, useState } from "react"
-import { ArrowLeft, ChevronDownIcon, Loader2, Save, StepBack, Trash2, UploadCloudIcon } from "lucide-react"
+import { ChevronDownIcon, Loader2, StepBack, } from "lucide-react"
 import { toast } from "sonner"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useParams, useRouter } from "next/navigation"
-import { IconCategory2, IconClearAll } from "@tabler/icons-react"
+import { IconCategory2,} from "@tabler/icons-react"
 import { Separator } from "@/components/ui/separator"
-import { uploadToImageKit } from "@/components/image-kit-upload"
 import { User } from "@/types/type"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
@@ -116,8 +115,8 @@ export default function UpdateCouponForm() {
                        usedCount: coupon.usedCount || 0,
                     });
                 }
-            } catch (err) {
-                toast.error("Failed to load category")
+            } catch (error) {
+                toast.error("Failed to load category",error)
             } finally {
                 setLoading(false)
             }
