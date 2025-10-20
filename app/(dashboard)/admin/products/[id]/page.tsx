@@ -2,7 +2,7 @@
 
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray } from "react-hook-form"
+import { useForm, useFieldArray, type UseFormReturn, type FieldErrors } from "react-hook-form"
 import {
     Form,
     FormControl,
@@ -28,6 +28,7 @@ import { Category,  Product } from "@/types/type"
 import { useParams, useRouter } from "next/navigation"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import Image from "next/image"
+import { getErrorMessage } from "@/components/ui/get-error-message"
 
 
 
@@ -55,7 +56,7 @@ const formSchema = z.object({
 
 
 
-function VariantEditor({ index, form, removeVariant }: { index: number; form ; removeVariant: (idx: number) => void }) {
+function VariantEditor({ index, form, removeVariant }: { index: number; form: UseFormReturn<z.infer<typeof formSchema>>; removeVariant: (idx: number) => void }) {
     const [files, setFiles] = useState<File[]>([]);
     const [isUploading, setIsUploading] = useState(false);
     const { control } = form
@@ -398,8 +399,8 @@ export default function UpdateProductForm() {
     }
 
 
-    function onError(errors) {
-        console.log("❌ Form validation errors:", errors)
+    function onError(error: FieldErrors<z.infer<typeof formSchema>>) {
+        console.log(error || "❌ Form validation errors:")
         console.log("🔍 Form state:", form.formState)
     }
 
@@ -434,7 +435,7 @@ export default function UpdateProductForm() {
                        })
                    }
                } catch (error) {
-                   toast.error("Failed to load product",error)
+                   toast.error("Failed to load product: " + getErrorMessage(error));
                } finally {
                    setLoading(false)
                }
@@ -449,7 +450,7 @@ useEffect(() => {
       const category = await getCategory();
       setCategories(category);
     } catch (error) {
-      toast.error("Failed to load categories",error);
+      toast.error("Failed to load categories: " + getErrorMessage(error));
     }
   }
   fetchCategories();
