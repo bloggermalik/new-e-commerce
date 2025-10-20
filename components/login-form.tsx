@@ -28,6 +28,7 @@ import { Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createAuthClient } from "better-auth/client";
 import { useState } from "react" 
+import { getErrorMessage } from "./ui/get-error-message"
 
 
 const formSchema = z.object({
@@ -66,7 +67,7 @@ export function LoginForm({
       });
       toast.success("Please wait...")
     } catch (error) {
-      toast.error("Google sign-in failed",error)
+      toast.error("Google sign-in failed" + getErrorMessage(error))
     } finally {
       setIsGoogleLoading(false) // Reset loading state after completion
     }
