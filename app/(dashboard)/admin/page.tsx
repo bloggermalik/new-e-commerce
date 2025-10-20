@@ -10,6 +10,8 @@ import {
 
 import data from "./dashboard/data.json"
 import { getSession } from "@/server/user"
+export const dynamic = "force-dynamic";
+
 
 export default async function Page() {
 

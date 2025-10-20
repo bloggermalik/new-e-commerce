@@ -7,6 +7,8 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
+export const dynamic = "force-dynamic";
+
 
 import data from "./data.json"
 

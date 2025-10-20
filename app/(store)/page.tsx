@@ -2,6 +2,8 @@ import { Button } from '@/components/ui/button';
 import { getProducts } from '@/server/user'
 import Image from 'next/image';
 import React from 'react'
+export const dynamic = "force-dynamic";
+
 
 async function page() {
 
