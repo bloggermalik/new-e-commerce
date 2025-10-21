@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { ModeToggle } from "../mode-toggle"
 
 // Menu items.
 const items = [
@@ -47,6 +48,8 @@ export function AppSidebarNew() {
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
+                     <ModeToggle/>
+            
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>

@@ -3,8 +3,9 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { ModeToggle } from "./mode-toggle"
 import HeaderSearchbar from "./ui/header-searchbar"
 import CartIcon from "./ui/cart-icon"
-import { LoginLogoutAvatar, LoginLogoutButton } from "./login-logout-buttton"
+import { LoginLogoutAvatar} from "./login-logout-buttton"
 import { getSession } from "@/server/user"
+import { User2 } from "lucide-react"
 
 export async function SiteHeader() {
 
@@ -28,7 +29,7 @@ export async function SiteHeader() {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4 hidden md:flex"
         />
-        {!session && <LoginLogoutButton />}
+        {!session && <User2 />}
 
         <LoginLogoutAvatar />
          <Separator
