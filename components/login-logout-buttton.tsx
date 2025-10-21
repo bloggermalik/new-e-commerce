@@ -1,9 +1,8 @@
 import { getSession } from '@/server/user'
 import React, { Suspense } from 'react'
-import { Button } from './ui/button'
 import Link from 'next/link'
 import { LogoutButton } from "./logout-button-client"
-import {  LogInIcon } from 'lucide-react'
+import {   User2 } from 'lucide-react'
 import { Skeleton } from "./ui/skeleton"
 import AvatarDropdownClient from './ui/avatar-dropdown-client'
 
@@ -24,10 +23,7 @@ export async function LoginLogoutButton() {
         <LogoutButton />
       ) : (
         <Link href="/login">
-          <Button>
-            <LogInIcon className="mr-2 h-4 w-4" />
-            Login / SignUp
-          </Button>
+            <User2 />
         </Link>
       )}
     </Suspense>

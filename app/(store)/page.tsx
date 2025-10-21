@@ -22,7 +22,7 @@ async function page() {
             <div key={product.id} className="bg-white shadow-md p-4 w-[200px]  flex items-center justify-center text-lg font-semibold rounded-lg">
               <div>
               {/* Product Image */}
-                <div className="w-[200px] h-[200px] p-1 flex items-center justify-center overflow-hidden rounded-md ">
+                <div className=" h-[200px] p-1 flex items-center justify-center overflow-hidden rounded-md ">
                   {product.variants[0].images[0] ? (
                     <Image
                       key={product.id}
