@@ -30,7 +30,7 @@ export default function AvatarDropdownClient({ session }: { session: Session }) 
       <DropdownMenuContent
         align="end"
         sideOffset={8}
-        className="animate-slide-up-fade rounded-4xl border bg-background p-2 shadow-md w-[400px]"
+        className="animate-slide-up-fade rounded-4xl border bg-background p-2 shadow-md max-w-lg w-full"
       >
         <div className='flex flex-col items-center space-y-3 px-2  border-b '>
           <span className='text-md font-medium'>{session?.user.email}</span>
