@@ -90,7 +90,7 @@ export default function BottomNav() {
         })}
 
         {/* ✅ Replace Profile with Sidebar Trigger */}
-        <SidebarTrigger className="ml-4 block md:hidden" />
+        <SidebarTrigger className="mb-4 block md:hidden" />
       </div>
     </nav>
   )
