@@ -86,7 +86,7 @@ async function page() {
 
   return (
     <div className="flex justify-center p-3">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center w-full">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-6 justify-items-center w-full">
         {products.map((product) => {
           // Discount calculation
           const sellPrice = product.variants[0]?.sellPrice ?? 0;
@@ -97,7 +97,7 @@ async function page() {
           return (
             <div
               key={product.id}
-              className="bg-white shadow-md p-4 flex flex-col items-center text-lg font-semibold rounded-lg w-full max-w-[250px] hover:shadow-lg transition"
+              className="bg-white shadow-md p-2 flex flex-col items-center text-lg font-semibold rounded-lg w-full max-w-[250px] hover:shadow-lg !transition"
             >
               {/* Product Image */}
               <div className="w-full aspect-square flex items-center justify-center overflow-hidden rounded-md bg-gray-50">
@@ -125,13 +125,13 @@ async function page() {
                 </p>
 
                 {/* Sell Price */}
-                <p className="text-green-600 text-md font-semibold">
+                <p className="text-green-600 text-md font-bold">
                   ₹{sellPrice}
                 </p>
 
                 {/* Cost price & Discount */}
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-500 text-sm line-through">
+                  <span className="text-gray-500 text-xs line-through">
                     ₹{costPrice}
                   </span>
                   {discount > 0 && (
