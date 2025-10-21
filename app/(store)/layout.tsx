@@ -69,12 +69,12 @@ export default function RootLayout({
                     </div>
                   </div>
                 </SidebarInset>
+        {/* Bottom navigation appeared in Mobile View */}
+                <BottomNav />
               </SidebarProvider>
             </Providers>
           </div>
         </ThemeProvider>
-        {/* Bottom navigation appeared in Mobile View */}
-        <BottomNav />
       </body>
     </html>
   );

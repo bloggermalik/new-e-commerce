@@ -85,7 +85,7 @@ async function page() {
   const products = await getProducts();
 
   return (
-    <div className="flex justify-center p-3">
+    <div className="flex justify-center p-0">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-6 justify-items-center w-full">
         {products.map((product) => {
           // Discount calculation
@@ -125,7 +125,7 @@ async function page() {
                 </p>
 
                 {/* Sell Price */}
-                <p className="text-green-600 text-md font-bold">
+                <p className="text-black text-md font-bold">
                   ₹{sellPrice}
                 </p>
 

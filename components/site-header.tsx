@@ -1,5 +1,4 @@
 import { Separator } from "@/components/ui/separator"
-import { SidebarTrigger } from "@/components/ui/sidebar"
 import { ModeToggle } from "./mode-toggle"
 import HeaderSearchbar from "./ui/header-searchbar"
 import CartIcon from "./ui/cart-icon"
@@ -15,7 +14,7 @@ export async function SiteHeader() {
     <header className=" bg-background-header flex h-(--header-height) shrink-0 items-center border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
       <div className="flex w-full items-center ">
       
-        <SidebarTrigger className="ml-4 block md:hidden" />
+       
         
         <h1 className="text-lg md:ml-16 ml-4 font-medium">Lenzoa.com</h1>
 
