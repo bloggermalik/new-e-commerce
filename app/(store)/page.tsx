@@ -18,11 +18,11 @@ async function page() {
         const costPrice = product.variants[0].costPrice
         const discount = costPrice > 0 ? ((costPrice - sellPrice) / costPrice) * 100 : 0;  
         return (
-          <div key={product.id}>
-            <div key={product.id} className="bg-white shadow-md p-4 w-[200px]  flex items-center justify-center text-lg font-semibold rounded-lg">
+       
+            <div key={product.id} className="bg-white shadow-md p-4 flex flex-col items-center justify-center text-lg font-semibold rounded-lg w-full max-w-[250px]" >
               <div>
               {/* Product Image */}
-                <div className=" h-[200px] p-1 flex items-center justify-center overflow-hidden rounded-md ">
+                <div className="w-full aspect-square flex items-center justify-center overflow-hidden rounded-md bg-gray-50">
                   {product.variants[0].images[0] ? (
                     <Image
                       key={product.id}
@@ -59,7 +59,7 @@ async function page() {
                 </div>  
               </div>
             </div>
-          </div>
+          
         )}
       )
     }
