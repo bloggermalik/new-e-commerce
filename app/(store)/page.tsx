@@ -1,7 +1,6 @@
 
 import { Button } from "@/components/ui/button";
 import { db } from "@/db/drizzle";
-import { getProducts } from "@/server/user";
 import { unstable_cache } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";

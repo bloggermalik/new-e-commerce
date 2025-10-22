@@ -1,6 +1,5 @@
 import { db } from "@/db/drizzle"
 import { products } from "@/db/schema"
-import { Product } from "@/types/type"
 import { eq } from "drizzle-orm"
 import Image from "next/image"
 import { JSX } from "react"
