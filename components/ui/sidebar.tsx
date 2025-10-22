@@ -205,7 +205,7 @@ function Sidebar({
              {/* Floating close button at bottom-right */}
             <Button
               onClick={() => setOpenMobile(false)}
-              className="absolute bottom-4 right-4 px-4 py-2 rounded-full bg-muted text-foreground hover:bg-muted-foreground hover:text-background transition"
+              className="absolute bottom-12 right-4 px-4 py-2 rounded-full bg-muted text-foreground hover:bg-muted-foreground hover:text-background transition"
             >
               ✕
             </Button>
