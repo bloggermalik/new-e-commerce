@@ -50,7 +50,7 @@ export default function AvatarDropdownClient({ session }: { session: Session }) 
           <span className='font-medium text-lg '>{session?.user?.name}</span>
             {session?.user?.role === 'admin' && <span className='text-xs text-muted-foreground capitalize -mt-4 '>Role: {session?.user?.role}</span>}
           <Separator className='my-3' />
-          <Link href="/profile" className='w-[300px]  cursor-pointer hidden md:block'>
+          <Link href="/profile" className='w-[300px]  cursor-pointer'>
             <Button variant="outline" size="sm" className='w-full  h-11  cursor-pointer rounded-full
             hover:border-primary hover:translate-x-0.5  !transition-all duration-300 ease-in-out'>
               <User className='mr-3' />
