@@ -23,7 +23,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div className="relative w-full md:w-1/2 aspect-square max-h-[500px] bg-gray-50">
                 {singleProduct && <Image src={singleProduct?.variants[0].images[0]} alt={singleProduct.name} fill className="object-contain" />}</div>
             <div className="border-l">
-                tretert
+                <h1 className="text-2xl font-bold">{singleProduct.name}</h1>
+                <p className="text-gray-600">${singleProduct.variants[0].sellPrice}</p>
+                <p className="text-gray-600" >{singleProduct.description}</p>
             </div>
         </div>
     )
