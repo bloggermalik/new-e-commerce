@@ -187,7 +187,7 @@ function Sidebar({
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
-          className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
+          className="bg-sidebar text-sidebar-foreground w-full h-screen max-w-full p-0 [&>button]:hidden"
           style={
             {
               "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -199,7 +199,18 @@ function Sidebar({
             <SheetTitle>Sidebar</SheetTitle>
             <SheetDescription>Displays the mobile sidebar.</SheetDescription>
           </SheetHeader>
-          <div className="flex h-full w-full flex-col">{children}</div>
+           <div className="relative flex h-full w-full flex-col">
+          {children}
+
+             {/* Floating close button at bottom-right */}
+            <Button
+              onClick={() => setOpenMobile(false)}
+              className="absolute bottom-4 right-4 px-4 py-2 rounded-full bg-muted text-foreground hover:bg-muted-foreground hover:text-background transition"
+            >
+              ✕
+            </Button>
+          </div>
+
         </SheetContent>
       </Sheet>
     )

@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { ModeToggle } from "../mode-toggle"
+import HeaderSearchbar from "./header-searchbar"
 
 // Menu items.
 const items = [
@@ -43,11 +44,12 @@ const items = [
 
 export function AppSidebarNew() {
   return (
-    <Sidebar collapsible="icon" >
+    <Sidebar collapsible="icon" className="" >
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel></SidebarGroupLabel>
           <SidebarGroupContent>
+            <HeaderSearchbar />
                      <ModeToggle/>
             
             <SidebarMenu>

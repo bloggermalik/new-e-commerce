@@ -16,9 +16,9 @@ export default function AvatarDropdownClient({ session }: { session: Session }) 
   console.log("My session is", session);
 
   return (
-    <DropdownMenu>
+    <DropdownMenu >
       <DropdownMenuTrigger asChild>
-        <div className="group flex items-center cursor-pointer gap-2 mr-2 md:mr-2">
+        <div className="group flex items-center cursor-pointer gap-2 !ml-0 mr-2 md:mr-2">
           <Avatar className='w-10 h-10'>
             <AvatarImage src={session?.user.image ?? undefined} />
             <AvatarFallback>{session?.user.name?.[0] || 'U'}</AvatarFallback>

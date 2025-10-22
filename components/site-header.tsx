@@ -16,10 +16,10 @@ export async function SiteHeader() {
       
        
         
-        <h1 className="text-lg md:ml-16 ml-4 font-medium">Lenzoa.com</h1>
+        <h1 className="text-lg md:ml-16 mx-auto font-logo  font-medium">Lenzoa.com</h1>
 
-        <HeaderSearchbar />
-        <div className="ml-auto flex items-center gap-2">
+        <HeaderSearchbar className="hidden md:block"  />
+        <div className=" flex items-center gap-2">
          <div className="hidden md:block">
          <ModeToggle/>
          </div>

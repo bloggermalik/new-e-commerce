@@ -1,10 +1,12 @@
 import { Search } from "lucide-react";
 import { Input } from "./input";
+import { cn } from "@/lib/utils";
 
-export default function HeaderSearchbar() {
+
+export default function HeaderSearchbar({className}:{className?:string}) {
 
     return (
-        <div className="relative w-full md:w-1/3 mx-6 md:mx-20">
+        <div className={ cn("relative w-full md:w-1/3  md:mx-20 ", className)}>
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
                 type="text"
