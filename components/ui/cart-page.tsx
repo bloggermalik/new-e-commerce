@@ -8,9 +8,11 @@ import Image from "next/image";
 import { toast } from "sonner";
 import StepProgressBar from "../step-progress-bar";
 import Link from "next/link";
-import { CircleMinus, CirclePlus } from "lucide-react";
+import { ArrowBigRight, CircleMinus, CirclePlus, WalletCards } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const [activeId, setActiveId] = useState<string | null>(null); // 👈 Track which item is being updated
 
@@ -181,6 +183,18 @@ export default function CartPage() {
       <div className="text-right font-bold text-lg mt-4">
         Total: ₹{totalPrice}
       </div>
+      <div className="flex justify-start mt-4">
+        <Button
+          variant="outline"
+          onClick={() => router.push("/checkout")}
+          className="max-w-md h-12 text-md bg-primary text-white shadow hover:bg-white border border-primary flex items-center gap-2"
+        >
+          <WalletCards />
+          Proceed to Checkout
+          <ArrowBigRight />
+        </Button>
+      </div>
+
     </div>
   );
 }

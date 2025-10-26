@@ -50,9 +50,8 @@ function CustomStepIcon({
         </div>
       ) : (
         <div
-          className={`md:w-8 md:h-8 w-6 h-6 rounded-full ${
-            active ? "bg-green-500 " : "bg-gray-300"
-          }`}
+          className={`md:w-8 md:h-8 w-6 h-6 rounded-full ${active ? "bg-green-500 " : "bg-gray-300"
+            }`}
         />
       )}
     </div>
@@ -70,12 +69,12 @@ export default function StepProgressBar() {
 
   return (
     <Box
-  sx={{
-    width: { xs: "100%", md: "80%" }, // full width on xs, 60% on md+
-    mb: 4,
-    mx: "auto", // center horizontally
-  }}
->
+      sx={{
+        width: { xs: "100%", md: "80%" }, // full width on xs, 60% on md+
+        mb: 4,
+        mx: "auto", // center horizontally
+      }}
+    >
       <Stepper activeStep={activeStep} alternativeLabel connector={<GreenConnector />}>
         {steps.map((step, index) => (
           <Step key={step.label} completed={index < activeStep}>
