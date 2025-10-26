@@ -183,13 +183,16 @@ export default function CartPage() {
       <div className="text-right font-bold text-lg mt-4">
         Total: ₹{totalPrice}
       </div>
-      <div className="flex justify-start mt-4">
+      <div className="flex justify-end mt-4">
         <Button
           variant="outline"
           onClick={() => router.push("/checkout")}
-          className="max-w-md h-12 text-md bg-primary text-white shadow hover:bg-white border border-primary flex items-center gap-2"
+          className="max-w-md  text-md bg-primary text-white shadow hover:bg-white 
+          border border-primary flex items-center gap-2
+          hover:text-primary !transition-colors duration-200 font-medium
+          "
         >
-          <WalletCards />
+          <WalletCards className=" hover:text-primary !transition-colors duration-200"/>
           Proceed to Checkout
           <ArrowBigRight />
         </Button>

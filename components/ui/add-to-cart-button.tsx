@@ -5,6 +5,7 @@ import { CartItem } from "@/types/type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getErrorMessage } from "./get-error-message";
+import { Plus } from "lucide-react";
 
 
 export default function AddToCartButton({ productId, sellPrice }: { productId: string; sellPrice: number }) {
@@ -62,8 +63,23 @@ export default function AddToCartButton({ productId, sellPrice }: { productId: s
     );
     console.log("Product added from cart is", productId, sellPrice);
     return (
-        <Button onClick={() => mutate()} disabled={isPending} className="mt-3 w-full text-sm font-medium">
-            {isPending ? "Added" : "Add to cart"}
-        </Button>
+        <div className="flex justify-end w-full">
+        <Button
+  onClick={() => mutate()}
+  disabled={isPending}
+  variant="outline"
+  className="group mt-3 max-w-lg text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
+>
+  {isPending ? (
+    "Added"
+  ) : (
+    <>
+      <Plus className="h-5 w-5 mr-1 text-primary group-hover:text-white transition-colors duration-200" />
+      Add
+    </>
+  )}
+</Button>
+
+        </div>
     )
 }
