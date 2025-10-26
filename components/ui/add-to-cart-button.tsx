@@ -4,13 +4,19 @@ import { addToCart } from "@/server/user";
 import { CartItem } from "@/types/type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { getErrorMessage } from "./get-error-message";
 
 
 export default function AddToCartButton({ productId, sellPrice }: { productId: string; sellPrice: number }) {
     const queryClient = useQueryClient();
     const { mutate, isPending } = useMutation({
-        mutationFn: () => addToCart(productId, sellPrice),
-
+         mutationFn: async () => {
+            const result = await addToCart(productId, sellPrice);
+            if (!result.success) {
+                throw new Error(result.message); // <-- This makes toast.error work
+            }
+            return result;
+            },
         onMutate: async () => {
             // 1️⃣ Stop ongoing cart queries
             await queryClient.cancelQueries({ queryKey: ["cart"] });
@@ -44,6 +50,12 @@ export default function AddToCartButton({ productId, sellPrice }: { productId: s
         onSuccess: () => {
             console.log("Product added to cart successfully");
         },
+
+         onError: (error: unknown, _vars, context) => {
+            if (context?.previousCart)
+                queryClient.setQueryData(["cart"], context.previousCart);
+                toast.error(getErrorMessage(error));
+            },
 
     }
 
