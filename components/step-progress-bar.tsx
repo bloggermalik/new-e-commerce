@@ -69,7 +69,13 @@ export default function StepProgressBar() {
   }, [pathname]);
 
   return (
-    <Box sx={{ width: "100%", mb: 4}}>
+    <Box
+  sx={{
+    width: { xs: "100%", md: "80%" }, // full width on xs, 60% on md+
+    mb: 4,
+    mx: "auto", // center horizontally
+  }}
+>
       <Stepper activeStep={activeStep} alternativeLabel connector={<GreenConnector />}>
         {steps.map((step, index) => (
           <Step key={step.label} completed={index < activeStep}>

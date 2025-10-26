@@ -124,18 +124,18 @@ export default function CartPage() {
           className="flex items-center gap-4 border-b pb-4"
         >
           <Link href={`/product/${item.productId}`} className="block">
-          <Image
-            src={item.image?.[0] || "/placeholder.png"}
-            alt={item.name || "Product"}
-            width={50}
-            height={50}
-            className="object-contain rounded-md"
-          />
+            <Image
+              src={item.image?.[0] || "/placeholder.png"}
+              alt={item.name || "Product"}
+              width={50}
+              height={50}
+              className="object-contain rounded-md"
+            />
           </Link>
 
           <div className="flex-1">
             <h3 className="font-medium text-xs md:text-sm">{item.name}</h3>
-          
+
             <p className="text-gray-400 text-xs mt-1">
               ₹{item.price} × {item.quantity}
             </p>
@@ -154,7 +154,7 @@ export default function CartPage() {
               }
               className="h-8 w-8 text-lg bg-white border border-0"
             >
-                <CircleMinus className="!h-8 !w-8 !text-red-500" />
+              <CircleMinus className="!h-8 !w-8 !text-gray-400" />
 
             </Button>
 
@@ -171,7 +171,7 @@ export default function CartPage() {
               }
               className="h-8 w-8 text-lg bg-white border-0"
             >
-                             <CirclePlus className="!h-8 !w-8 !text-green-500" />
+              <CirclePlus className="!h-8 !w-8 !text-gray-400" />
 
             </Button>
           </div>
