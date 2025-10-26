@@ -7,6 +7,8 @@ import { Button } from "./button";
 import Image from "next/image";
 import { toast } from "sonner";
 import StepProgressBar from "../step-progress-bar";
+import Link from "next/link";
+import { CircleMinus, CirclePlus } from "lucide-react";
 
 export default function CartPage() {
   const queryClient = useQueryClient();
@@ -121,29 +123,28 @@ export default function CartPage() {
           key={item.productId}
           className="flex items-center gap-4 border-b pb-4"
         >
+          <Link href={`/product/${item.productId}`} className="block">
           <Image
             src={item.image?.[0] || "/placeholder.png"}
             alt={item.name || "Product"}
-            width={80}
-            height={80}
+            width={50}
+            height={50}
             className="object-contain rounded-md"
           />
+          </Link>
 
           <div className="flex-1">
-            <h3 className="font-semibold">{item.name}</h3>
-            {item.description && (
-              <p className="text-sm text-gray-500 line-clamp-2">
-                {item.description}
-              </p>
-            )}
-            <p className="font-medium mt-1">
+            <h3 className="font-medium text-xs md:text-sm">{item.name}</h3>
+          
+            <p className="text-gray-400 text-xs mt-1">
               ₹{item.price} × {item.quantity}
             </p>
           </div>
 
           {/* ✅ Quantity Counter */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <Button
+              variant={"outline"}
               onClick={() =>
                 mutate({
                   productId: item.productId,
@@ -151,14 +152,16 @@ export default function CartPage() {
                   action: "decrease",
                 })
               }
-              className="h-8 w-8 text-lg"
+              className="h-8 w-8 text-lg bg-white border border-0"
             >
-              -
+                <CircleMinus className="!h-8 !w-8 !text-red-500" />
+
             </Button>
 
             <span className="min-w-[20px] text-center">{item.quantity}</span>
 
             <Button
+              variant={"outline"}
               onClick={() =>
                 mutate({
                   productId: item.productId,
@@ -166,9 +169,10 @@ export default function CartPage() {
                   action: "increase",
                 })
               }
-              className="h-8 w-8 text-lg"
+              className="h-8 w-8 text-lg bg-white border-0"
             >
-              +
+                             <CirclePlus className="!h-8 !w-8 !text-green-500" />
+
             </Button>
           </div>
         </div>

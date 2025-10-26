@@ -19,7 +19,7 @@ const steps = [
 // Custom green connector
 const GreenConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
-    top: 12,
+    top: 11,
   },
   [`& .${stepConnectorClasses.line}`]: {
     height: 3,
@@ -69,7 +69,7 @@ export default function StepProgressBar() {
   }, [pathname]);
 
   return (
-    <Box sx={{ width: "100%", mb: 4 }}>
+    <Box sx={{ width: "100%", mb: 4}}>
       <Stepper activeStep={activeStep} alternativeLabel connector={<GreenConnector />}>
         {steps.map((step, index) => (
           <Step key={step.label} completed={index < activeStep}>
