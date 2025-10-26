@@ -113,8 +113,8 @@ export default function CartPage() {
 
   return (
     <div className="max-w-3xl mx-auto p-4 space-y-4">
-  
-  <StepProgressBar />;
+
+      <StepProgressBar />
 
       {cart.map((item) => (
         <div
