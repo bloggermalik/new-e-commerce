@@ -11,6 +11,8 @@ import {
 import Providers from "../(dashboard)/admin/provider/tanstack"
 import { AppSidebarNew } from "@/components/ui/app-sidebar-new";
 import BottomNav from "@/components/ui/bottom-navigation";
+import ClientMuiProvider from "@/components/client-mui-provider";
+
 
 
 const geistSans = Geist({
@@ -35,6 +37,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <meta name="viewport" content="initial-scale=1, width=device-width" />
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground font-sans`}
       >
@@ -44,36 +48,38 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className=" mx-auto max-w-[1920px] min-h-screen">
-            {/* TanStack Query Provider */}
-            <Providers>
-              <SidebarProvider defaultOpen={false}
-                style={
-                  {
-                    "--sidebar-width": "calc(var(--spacing) * 72)",
-                    "--header-height": "calc(var(--spacing) * 20)",
-                  } as React.CSSProperties
-                }
-              >
-                <div className="block md:hidden" >
-                  <AppSidebarNew />
-                </div>
-                {/* Main Layout contain Header and Page */}
-                <SidebarInset className="text-foreground  ">
-                  <SiteHeader />
-                  <Toaster richColors position="top-right" />
-                  <div className=' border min-h-screen'>
-                    <div className='m-2 md:m-4 shadow rounded-2xl min-h-screen bg-white dark:bg-background-header'>
-                      
-                      {children}
-                    </div>
+          <ClientMuiProvider>
+            <div className=" mx-auto max-w-[1920px] min-h-screen">
+              {/* TanStack Query Provider */}
+              <Providers>
+                <SidebarProvider defaultOpen={false}
+                  style={
+                    {
+                      "--sidebar-width": "calc(var(--spacing) * 72)",
+                      "--header-height": "calc(var(--spacing) * 20)",
+                    } as React.CSSProperties
+                  }
+                >
+                  <div className="block md:hidden" >
+                    <AppSidebarNew />
                   </div>
-                </SidebarInset>
-        {/* Bottom navigation appeared in Mobile View */}
-                <BottomNav />
-              </SidebarProvider>
-            </Providers>
-          </div>
+                  {/* Main Layout contain Header and Page */}
+                  <SidebarInset className="text-foreground  ">
+                    <SiteHeader />
+                    <Toaster richColors position="top-right" />
+                    <div className=' border min-h-screen'>
+                      <div className='m-2 md:m-4 shadow rounded-2xl min-h-screen bg-white dark:bg-background-header'>
+
+                        {children}
+                      </div>
+                    </div>
+                  </SidebarInset>
+                  {/* Bottom navigation appeared in Mobile View */}
+                  <BottomNav />
+                </SidebarProvider>
+              </Providers>
+            </div>
+          </ClientMuiProvider>
         </ThemeProvider>
       </body>
     </html>

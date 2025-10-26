@@ -6,6 +6,7 @@ import { getCart, addToCart } from "@/server/user";
 import { Button } from "./button";
 import Image from "next/image";
 import { toast } from "sonner";
+import StepProgressBar from "../step-progress-bar";
 
 export default function CartPage() {
   const queryClient = useQueryClient();
@@ -112,6 +113,9 @@ export default function CartPage() {
 
   return (
     <div className="max-w-3xl mx-auto p-4 space-y-4">
+  
+  <StepProgressBar />;
+
       {cart.map((item) => (
         <div
           key={item.productId}
@@ -147,7 +151,6 @@ export default function CartPage() {
                   action: "decrease",
                 })
               }
-              disabled={activeId === item.productId} 
               className="h-8 w-8 text-lg"
             >
               -
@@ -163,7 +166,6 @@ export default function CartPage() {
                   action: "increase",
                 })
               }
-              disabled={activeId === item.productId} 
               className="h-8 w-8 text-lg"
             >
               +
