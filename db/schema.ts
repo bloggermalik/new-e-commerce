@@ -191,6 +191,38 @@ export const coupons = pgTable("coupons", {
 });
 
 
+
+// Cart Schema
+
+export const cart = pgTable("cart", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id")
+    .notNull().references(() => user.id, { onDelete: "cascade" }),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
+
+export const cartItems = pgTable("cart_items", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  cartId: uuid("cart_id")
+    .notNull()
+    .references(() => cart.id, { onDelete: "cascade" }),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+  quantity: integer("quantity").default(1).notNull(),
+  price: integer("price").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
+
 // RELATIONS
 
 export const categoryRelations = relations(categories, ({ many }) => ({
@@ -223,6 +255,27 @@ export const attributeRelations = relations(variantAttributes, ({ one }) => ({
   }), // attribute → variant
 }));
 
+// ✅ Relation between user and cart
+export const cartRelations = relations(cart, ({ one, many }) => ({
+  user: one(user, {
+    fields: [cart.userId],
+    references: [user.id],
+  }),
+  cartItems: many(cartItems),
+}));
+
+// ✅ Relation between cart and cartItems
+export const cartItemsRelations = relations(cartItems, ({ one }) => ({
+  cart: one(cart, {
+    fields: [cartItems.cartId],
+    references: [cart.id],
+  }),
+  product: one(products, {
+    fields: [cartItems.productId],
+    references: [products.id],
+  }),
+}));
+
 
 
 export const schema = {
@@ -237,4 +290,14 @@ export const schema = {
   productVariants,
   variantAttributes,
   categories,
+  cart,
+  cartItems,
+  coupons,
+  discount,
+  categoryRelations,
+  productRelations,
+  variantRelations,
+  attributeRelations,
+  cartRelations,
+  cartItemsRelations,
 };

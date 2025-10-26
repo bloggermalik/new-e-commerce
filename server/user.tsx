@@ -3,7 +3,7 @@ import { db } from "@/db/drizzle";
 import { auth } from "@/lib/auth";
 import { asc, desc, eq, is, sql } from "drizzle-orm";
 import { cookies, headers } from "next/headers";
-import { user as users,categories, products, productVariants, variantAttributes, coupons } from "@/db/schema";
+import { user as users, categories, products, productVariants, variantAttributes, coupons, cart, cartItems } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Category, Coupon, NewCategory, NewCoupon, NewProduct, NewUser, Product, Role, Session, User } from "@/types/type";
@@ -11,34 +11,34 @@ import { can } from "@/lib/auth/check-permission";
 
 
 export const signIn = async (values: { email: string, password: string }) => {
-    try {
-        await auth.api.signInEmail({
-            body: {
-                email: values.email,
-                password: values.password,
-            }
-        });
-        return {
-            message: "Sign-in successful",
-            success: true,
-        }
-    } catch (error) {
-        console.error("Error signing in:", error);
-        return {
-            message: "Sign-in failed",
-            success: false,
-        }
+  try {
+    await auth.api.signInEmail({
+      body: {
+        email: values.email,
+        password: values.password,
+      }
+    });
+    return {
+      message: "Sign-in successful",
+      success: true,
     }
+  } catch (error) {
+    console.error("Error signing in:", error);
+    return {
+      message: "Sign-in failed",
+      success: false,
+    }
+  }
 }
 
 export const signUp = async (values: { name: string, email: string, password: string }) => {
-    await auth.api.signUpEmail({
-        body: {
-            name: values.name,
-            email: values.email,
-            password: values.password,
-        }
-    });
+  await auth.api.signUpEmail({
+    body: {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    }
+  });
 }
 
 
@@ -54,12 +54,12 @@ export const getSession = async (): Promise<Session | undefined> => {
       ...session,
       session: {
         ...session.session,
-        ipAddress: session.session.ipAddress ?? null, 
-        userAgent: session.session.userAgent ?? undefined, 
+        ipAddress: session.session.ipAddress ?? null,
+        userAgent: session.session.userAgent ?? undefined,
       },
-        user: {
+      user: {
         ...session.user,
-        role: session.user.role as Role, 
+        role: session.user.role as Role,
         banned: session.user.banned ?? null,
 
       },
@@ -72,29 +72,29 @@ export const getSession = async (): Promise<Session | undefined> => {
 
 
 export const getCurrentUser = async () => {
-    const session = await getSession();
-    if (!session) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
-    const currentUser = await db.query.user.findFirst({
-        where: eq(users.id, session.user.id)
-    });
+  const currentUser = await db.query.user.findFirst({
+    where: eq(users.id, session.user.id)
+  });
 
-    console.log("currentUser", currentUser);
-    
+  console.log("currentUser", currentUser);
 
-    return {
-        ...session,
-        user: currentUser
-    }
+
+  return {
+    ...session,
+    user: currentUser
+  }
 }
 
 
 export async function signOutAction() {
-    await auth.api.signOut({
-        headers: await headers(),
-    });
+  await auth.api.signOut({
+    headers: await headers(),
+  });
 
-    (await cookies()).delete("better-auth.session");
+  (await cookies()).delete("better-auth.session");
 }
 
 
@@ -103,20 +103,20 @@ export async function signOutAction() {
 
 
 export async function isAdmin() {
-  
+
   const session = await getSession();
-  const admin = session?.user?.role=="admin";
-  
+  const admin = session?.user?.role == "admin";
+
   if (!session) {
     redirect("/login");
   }
-  
-  
+
+
   if (!admin) {
     redirect("/login");
   }
   return admin;
-  
+
 }
 
 export async function getUserById(id: string): Promise<User | null> {
@@ -135,30 +135,30 @@ export async function getUserById(id: string): Promise<User | null> {
 
 export async function getUser() {
 
-    const session = await getSession();
-    if (!session) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
-    const user = await db.select().from(users).orderBy(desc(users.createdAt));
+  const user = await db.select().from(users).orderBy(desc(users.createdAt));
 
-    console.log("User from getUser function:", user);
-    return user;
+  console.log("User from getUser function:", user);
+  return user;
 
 
 }
 
 
-export async function deleteUser(id: string): Promise<{success: boolean, message: string}> {
-    const session = await getSession();
-    if (!session) redirect("/login");
+export async function deleteUser(id: string): Promise<{ success: boolean, message: string }> {
+  const session = await getSession();
+  if (!session) redirect("/login");
 
-    const hasPermission = await can(session, { users: ["delete"] });
-    if (!hasPermission) return {success: false, message: "You do not have permission to delete users."}
-    try {
-      await db.execute(sql`DELETE FROM "user" WHERE id = ${id}`);
-      return {success: true, message: "User deleted successfully."}
-      
-    } catch (error) {
-      return {
+  const hasPermission = await can(session, { users: ["delete"] });
+  if (!hasPermission) return { success: false, message: "You do not have permission to delete users." }
+  try {
+    await db.execute(sql`DELETE FROM "user" WHERE id = ${id}`);
+    return { success: true, message: "User deleted successfully." }
+
+  } catch (error) {
+    return {
       success: false,
       message:
         "Error deleting user: " +
@@ -170,18 +170,18 @@ export async function deleteUser(id: string): Promise<{success: boolean, message
 }
 
 
-export async function createUser(values:{name: string, email: string, password: string, role?: "admin" | "user" | "moderator"}) {
+export async function createUser(values: { name: string, email: string, password: string, role?: "admin" | "user" | "moderator" }) {
   const session = await getSession();
-  
+
   // 1. Session Check
   if (!session) {
-    return redirect("/login"); 
+    return redirect("/login");
   }
-  
+
   // 2. Permission Check
   const hasPermission = await can(session, { users: ["create"] });
-  if (!hasPermission)  return {success: false, message: "You do not have permission to create users."}
-  
+  if (!hasPermission) return { success: false, message: "You do not have permission to create users." }
+
   // 3. User Creation Attempt
   try {
     await auth.api.createUser({
@@ -190,14 +190,14 @@ export async function createUser(values:{name: string, email: string, password: 
         email: values.email,
         password: values.password,
         role: values.role,
-      }, 
+      },
       headers: await headers(),
     });
-    return{ success: true, message: "User created successfully." };
-    
+    return { success: true, message: "User created successfully." };
+
 
   } catch (error) {
-    
+
     return { success: false, message: "Error creating user: " + (error instanceof Error ? error.message : "Unknown error") };
   }
 }
@@ -238,74 +238,73 @@ export async function updateUser(id: string, values: Partial<NewUser>) {
 
 export async function getCategory(): Promise<Category[]> {
 
-    const session = await getSession();
-    if (!session) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
-    const category = await db.select().from(categories);
+  const category = await db.select().from(categories);
 
-    return category;
+  return category;
 }
 
 export async function createCategory(values: NewCategory) {
-    await db.insert(categories).values({
-        name: values.name,
-        description: values.description,
-        slug: values.slug,
-        image: values.image,
-        isActive: values.isActive,
-    });
+  await db.insert(categories).values({
+    name: values.name,
+    description: values.description,
+    slug: values.slug,
+    image: values.image,
+    isActive: values.isActive,
+  });
+  revalidatePath("/categories");
+
+}
+
+export async function deleteCategory(id: string): Promise<void> {
+  const session = await getSession();
+  if (!session) return;
+  const has = await can(session, { categories: ["delete"] });    // Check permission to delete category
+  if (!has) return redirect("/login/?error=notauthorised");
+  await db.delete(categories).where(eq(categories.id, id));     // If successful delete category
+  revalidatePath("/categories");
+}
+
+export async function updateCategory(id: string, values: Partial<NewCategory>) {
+  const session = await getSession();
+  if (!session) return;
+  const has = await can(session, { categories: ["update"] });    // Check permission to delete category
+  if (!has) return { success: false, message: "You do not have permission to update categories." };
+  try {
+    await db.update(categories).set({
+      name: values.name,
+      description: values.description,
+      slug: values.slug,
+      image: values.image,
+      isActive: values.isActive,
+    }).where(eq(categories.id, id));
     revalidatePath("/categories");
-   
+
+    const updatedCategory = await getCategoryById(id);
+    return { success: true, message: "Category updated successfully", category: updatedCategory };
+
+  } catch (error) {
+    const errorMessage = error instanceof Error
+      ? error.message
+      : String(error);
+
+    return {
+      success: false,
+      message: `Unable to update category: ${errorMessage}`
+    };
+  }
 }
 
-export async function deleteCategory(id:string): Promise<void> {
-    const session = await getSession();
-    if (!session) return;
-    const has = await can(session, { categories: ["delete"] });    // Check permission to delete category
-    if (!has) return redirect("/login/?error=notauthorised");
-    await db.delete(categories).where(eq(categories.id, id));     // If successful delete category
-    revalidatePath("/categories");
-}
+export async function getCategoryById(id: string): Promise<Category | null> {
 
-export async function updateCategory(id:string, values: Partial<NewCategory>) {
-    const session = await getSession();
-    if (!session) return;
-    const has = await can(session, { categories: ["update"] });    // Check permission to delete category
-    if (!has) return {success: false, message: "You do not have permission to update categories." };
-    try {
-      await db.update(categories).set({
-          name: values.name,
-          description: values.description,
-          slug: values.slug,
-          image: values.image,
-          isActive: values.isActive,
-      }).where(eq(categories.id, id));    
-      revalidatePath("/categories");
+  const session = await getSession();
+  if (!session) return null;
 
-      const updatedCategory = await getCategoryById(id);
-      return {success: true, message: "Category updated successfully", category: updatedCategory};
-      
-    } catch (error) 
-      {
-        const errorMessage = error instanceof Error 
-        ? error.message 
-        : String(error);
+  const category = await db.select().from(categories).where(eq(categories.id, id)).limit(1).execute();
 
-        return { 
-          success: false, 
-          message: `Unable to update category: ${errorMessage}` 
-        };
-}
-}
-
-export async function getCategoryById(id:string): Promise<Category | null> {
-
-    const session = await getSession();
-    if (!session) return null;
-
-    const category = await db.select().from(categories).where(eq(categories.id, id)).limit(1).execute();
-
-    return category[0] ?? null; 
+  return category[0] ?? null;
 }
 
 
@@ -313,7 +312,7 @@ export async function getCategoryById(id:string): Promise<Category | null> {
 // CRUD FOR PRODUCTS
 
 export async function getProducts(): Promise<Product[]> {
-      const allProducts = await db.query.products.findMany({
+  const allProducts = await db.query.products.findMany({
     with: {
       category: true,
       variants: {
@@ -329,19 +328,19 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getProductWithCategory(id: string): Promise<Product | null> {
-    const product = await db.query.products.findFirst({
-        where: eq(products.id, id),
+  const product = await db.query.products.findFirst({
+    where: eq(products.id, id),
+    with: {
+      category: true,
+      variants: {
         with: {
-            category: true,
-            variants: {
-                with: {
-                    attributes: true,
-                },
-            },
+          attributes: true,
         },
-    });
+      },
+    },
+  });
 
-    return product ?? null;
+  return product ?? null;
 }
 
 export async function createProduct(values: NewProduct) {
@@ -407,13 +406,13 @@ export async function createProduct(values: NewProduct) {
 
 
 
-export async function deleteProduct(id:string): Promise<void> {
-    const session = await getSession();
-    if (!session) return;
-    // const has = await can(session, { products: ["delete"] });    // Check permission to delete product
-    // if (!has) return redirect("/login/?error=notauthorised");
-    await db.delete(products).where(eq(products.id, id));     // If successful delete product
-    revalidatePath("/products");
+export async function deleteProduct(id: string): Promise<void> {
+  const session = await getSession();
+  if (!session) return;
+  // const has = await can(session, { products: ["delete"] });    // Check permission to delete product
+  // if (!has) return redirect("/login/?error=notauthorised");
+  await db.delete(products).where(eq(products.id, id));     // If successful delete product
+  revalidatePath("/products");
 }
 
 
@@ -478,69 +477,186 @@ export async function updateProduct(id: string, values: Partial<NewProduct>) {
 
 export async function getCoupons() {
 
-    const session = await getSession();
-    if (!session) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
-    const coupon = await db.select().from(coupons);
+  const coupon = await db.select().from(coupons);
 
-    return coupon;
+  return coupon;
 }
 
 export async function createCoupon(values: NewCoupon) {
-    await db.insert(coupons).values({
-        code: values.code,
-        discountType: values.discountType,
-        discountValue: values.discountValue,
-        isActive: values.isActive,
-        expiry: values.expiry,
-        usageLimit: values.usageLimit,
-        usedCount: values.usedCount,
-    });
-    revalidatePath("/coupons");
-   
+  await db.insert(coupons).values({
+    code: values.code,
+    discountType: values.discountType,
+    discountValue: values.discountValue,
+    isActive: values.isActive,
+    expiry: values.expiry,
+    usageLimit: values.usageLimit,
+    usedCount: values.usedCount,
+  });
+  revalidatePath("/coupons");
+
 }
 
-export async function deleteCoupon(id:string): Promise<void> {
-    const session = await getSession();
-    if (!session) return;
-    await db.delete(coupons).where(eq(coupons.id, id));     // If successful delete coupon
-    revalidatePath("/coupons");
+export async function deleteCoupon(id: string): Promise<void> {
+  const session = await getSession();
+  if (!session) return;
+  await db.delete(coupons).where(eq(coupons.id, id));     // If successful delete coupon
+  revalidatePath("/coupons");
 }
 
-export async function getCouponById(id:string): Promise<Coupon | null> {
+export async function getCouponById(id: string): Promise<Coupon | null> {
 
-    const session = await getSession();
-    if (!session) return null;
-    const coupon = await db.select().from(coupons).where(eq(coupons.id, id)).limit(1).execute();
+  const session = await getSession();
+  if (!session) return null;
+  const coupon = await db.select().from(coupons).where(eq(coupons.id, id)).limit(1).execute();
 
-    return coupon[0] ?? null; 
+  return coupon[0] ?? null;
 }
 
-export async function updateCoupon(id:string, values: Partial<NewCoupon>) {
-    const session = await getSession();
-    if (!session) return;
-    const has = await can(session, { coupons: ["update"] });    // Check permission to delete coupon
-    if (!has) return {success: false, message: "You do not have permission to update coupons."};
-    try {
-          await db.update(coupons).set({
-        code: values.code,
-        discountType: values.discountType,
-        discountValue: values.discountValue,
-        isActive: values.isActive,
-        expiry: values.expiry,
-        usageLimit: values.usageLimit,
-        usedCount: values.usedCount,
+export async function updateCoupon(id: string, values: Partial<NewCoupon>) {
+  const session = await getSession();
+  if (!session) return;
+  const has = await can(session, { coupons: ["update"] });    // Check permission to delete coupon
+  if (!has) return { success: false, message: "You do not have permission to update coupons." };
+  try {
+    await db.update(coupons).set({
+      code: values.code,
+      discountType: values.discountType,
+      discountValue: values.discountValue,
+      isActive: values.isActive,
+      expiry: values.expiry,
+      usageLimit: values.usageLimit,
+      usedCount: values.usedCount,
     }).where(eq(coupons.id, id));
 
     const updatedCoupon = await getCouponById(id);
-    return {success: true, message: "Coupon updated successfully", coupon: updatedCoupon};
-      
-    } catch (error) {
+    return { success: true, message: "Coupon updated successfully", coupon: updatedCoupon };
 
-      return {success: false , message:`Unable to update coupon ${error}`}
-      
+  } catch (error) {
+
+    return { success: false, message: `Unable to update coupon ${error}` }
+
+  }
+
+
+
+}
+
+
+// CART
+
+export async function addToCart(
+  productId: string,
+  sellPrice: number,
+  action: "increase" | "decrease" = "increase"
+) {
+  const session = await getSession();
+  if (!session) return { success: false, message: "Please Login First" };
+
+  const userId = session.user.id;
+  const quantityChange = action === "increase" ? 1 : -1;
+
+  // 1️⃣ Check if user already has a cart
+  let existingCart = await db.query.cart.findFirst({
+    where: eq(cart.userId, userId),
+  });
+
+  let cartId: string;
+
+  if (existingCart) {
+    cartId = existingCart.id;
+  } else {
+    // 2️⃣ Create new cart
+    const [newCart] = await db
+      .insert(cart)
+      .values({ userId })
+      .returning();
+    cartId = newCart.id;
+  }
+
+  // 3️⃣ Check for existing cart item
+  const existingItem = await db.query.cartItems.findFirst({
+    where: (fields, { and, eq }) =>
+      and(eq(fields.cartId, cartId), eq(fields.productId, productId)),
+  });
+
+  if (existingItem) {
+    // 4️⃣ Calculate new quantity
+    const newQuantity = existingItem.quantity + quantityChange;
+
+    if (newQuantity <= 0) {
+      // 🗑️ Remove item if quantity drops to 0
+      await db
+        .delete(cartItems)
+        .where(eq(cartItems.id, existingItem.id));
+      return { success: true, message: "Item removed from cart", cartId };
     }
 
-    
-    
+    // ✅ Update item quantity
+    await db
+      .update(cartItems)
+      .set({ quantity: newQuantity })
+      .where(eq(cartItems.id, existingItem.id));
+
+    return { success: true, message: "Cart updated", cartId };
+  }
+
+  // 5️⃣ Add new item if not exists and user increases
+  if (action === "increase") {
+    await db.insert(cartItems).values({
+      cartId,
+      productId,
+      quantity: 1,
+      price: sellPrice,
+    });
+    return { success: true, message: "Item added to cart", cartId };
+  }
+
+  // 🚫 Prevent decreasing non-existing item
+  return { success: false, message: "Item not found in cart" };
+}
+
+
+
+export async function getCart() {
+  try {
+    const session = await getSession();
+    if (!session) return [];
+
+    const userId = session.user.id;
+
+    // 1️⃣ Find the user's cart
+    const userCart = await db.query.cart.findFirst({
+      where: eq(cart.userId, userId),
+    });
+    if (!userCart) return [];
+
+    // 2️⃣ Fetch cart items with related product and variant info
+    const items = await db.query.cartItems.findMany({
+      where: eq(cartItems.cartId, userCart.id),
+      with: {
+        product: {
+          with: {
+            variants: true, // include variants
+          },
+        },
+      },
+    });
+
+    // 3️⃣ Map to desired shape
+    return items.map((item) => ({
+      id: item.id,
+      productId: item.productId,
+      quantity: item.quantity,
+      price: item.price,
+      name: item.product?.name ?? "",
+      description: item.product?.description ?? "",
+      image: item.product?.variants?.[0]?.images ?? [],
+    }));
+  } catch (err) {
+    console.error("Error fetching cart:", err);
+    return [];
+  }
 }

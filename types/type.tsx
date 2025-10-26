@@ -49,6 +49,17 @@ export type Coupon = InferSelectModel<typeof coupons>;
 export type NewCoupon = InferInsertModel<typeof coupons>;
 
 
+// Cart Types
+
+export interface CartItem {
+  productId: string;
+  sellPrice: number;
+  quantity: number;
+}
+
+
+
+
 // Session Types
 export type Role = "admin" | "user" | "moderator";
 

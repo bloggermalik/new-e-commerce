@@ -1,5 +1,5 @@
 
-import { Button } from "@/components/ui/button";
+import AddToCartButton from "@/components/ui/add-to-cart-button";
 import { db } from "@/db/drizzle";
 import { unstable_cache } from "next/cache";
 import Image from "next/image";
@@ -33,7 +33,7 @@ async function page() {
               key={product.id}
               className="bg-white shadow-md p-2 flex flex-col items-center text-lg font-semibold rounded-lg w-full max-w-[250px] hover:shadow-lg !transition"
             >
-              <Link href={`/products/${product.slug}`} className="bg-white shadow-md p-2 flex flex-col items-center text-lg font-semibold rounded-lg w-full max-w-[250px] hover:shadow-lg !transition">
+              <Link href={`/products/${product.slug}`} className=" flex flex-col items-center text-lg font-semibold rounded-lg w-full max-w-[250px] hover:shadow-lg !transition">
                 {/* Product Image */}
                 <div className="w-full aspect-square flex items-center justify-center overflow-hidden rounded-md bg-gray-50">
                   {product.variants[0]?.images?.[0] ? (
@@ -77,11 +77,12 @@ async function page() {
                   </div>
 
                   {/* Add Button */}
-                  <Button className="mt-3 w-full text-sm font-medium">
-                    + Add
-                  </Button>
+                 
                 </div>
               </Link>
+             
+              <AddToCartButton productId={product.id} sellPrice={sellPrice} />
+
             </div>
           );
         })}
