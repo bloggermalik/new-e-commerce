@@ -30,7 +30,7 @@ export default function AvatarDropdownClient({ session }: { session: Session }) 
       <DropdownMenuContent
         align="end"
         sideOffset={8}
-        className="animate-slide-up-fade rounded-4xl border bg-background p-2 shadow-md max-w-lg w-full"
+        className="animate-slide-up-fade rounded-4xl border bg-background p-2 shadow-md w-[300px] max-w-lg "
       >
         <div className='flex flex-col items-center space-y-3 px-2  border-b '>
           <span className='text-md font-medium'>{session?.user.email}</span>
@@ -48,41 +48,49 @@ export default function AvatarDropdownClient({ session }: { session: Session }) 
             </div>
           )}
           <span className='font-medium text-lg '>{session?.user?.name}</span>
-            {session?.user?.role === 'admin' && <span className='text-xs text-muted-foreground capitalize -mt-4 '>Role: {session?.user?.role}</span>}
+          {session?.user?.role === 'admin' && <span className='text-xs text-muted-foreground capitalize -mt-4 '>Role: {session?.user?.role}</span>}
           <Separator className='my-3' />
-          <Link href="/profile" className='w-[300px]  cursor-pointer'>
-            <Button variant="outline" size="sm" className='w-full  h-11  cursor-pointer rounded-full
+          <Link href="/profile" className='max-w-xl w-[220px] cursor-pointer'>
+            <DropdownMenuItem asChild>
+              <Button variant="outline" size="sm" className='w-full  h-11  cursor-pointer rounded-full
+              hover:border-primary hover:translate-x-0.5  !transition-all duration-300 ease-in-out'>
+                <User className='mr-3' />
+                View Profile
+              </Button>
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/profile" className='max-w-xl w-[220px] cursor-pointer hidden md:block'>
+            <DropdownMenuItem asChild>
+              <Button variant="outline" size="sm" className='w-full  h-11  cursor-pointer rounded-full
             hover:border-primary hover:translate-x-0.5  !transition-all duration-300 ease-in-out'>
-              <User className='mr-3' />
-              View Profile
-            </Button>
+                <Logs className='mr-3' />
+                My Orders
+              </Button>
+            </DropdownMenuItem>
           </Link>
-          <Link href="/profile" className='w-[300px]  cursor-pointer hidden md:block'>
-            <Button variant="outline" size="sm" className='w-full  h-11  cursor-pointer rounded-full
-            hover:border-primary hover:translate-x-0.5  !transition-all duration-300 ease-in-out'>
-              <Logs className='mr-3' />
-              My Orders
-            </Button>
-          </Link>
-          <Link href="/profile" className='w-[300px]  cursor-pointer mb-3'>
-            <Button variant="outline" size="sm" className='w-full border  h-11  cursor-pointer rounded-full
+          <Link href="/profile" className='max-w-xl w-[220px]  cursor-pointer mb-3'>
+            <DropdownMenuItem asChild>
+              <Button variant="outline" size="sm" className='w-full border  h-11  cursor-pointer rounded-full
             hover:border-primary hover:translate-x-0.5 !transition-all duration-300 ease-in-out'>
-              <MessageSquareMore className='mr-3' />
-              My Comments
-            </Button>
+                <MessageSquareMore className='mr-3' />
+                My Comments
+              </Button>
+            </DropdownMenuItem>
           </Link>
-          {((session?.user?.role === 'admin') || (session?.user?.role === 'moderator') ) && (
-             <Link href="/admin" className='w-[300px]  cursor-pointer mb-3'>
-            <Button variant="outline" size="sm" className='w-full border  h-11  cursor-pointer rounded-full
+          {((session?.user?.role === 'admin') || (session?.user?.role === 'moderator')) && (
+            <Link href="/admin" className='max-w-xl w-[220px]  cursor-pointer mb-3'>
+              <DropdownMenuItem asChild>
+                <Button variant="outline" size="sm" className='w-full border  h-11  cursor-pointer rounded-full
             hover:border-primary hover:translate-x-0.5 !transition-all duration-300 ease-in-out'>
-              <Users className='mr-3' />
-              Admin Dashboard
-            </Button>
-          </Link>
+                  <Users className='mr-3' />
+                  Admin Dashboard
+                </Button>
+              </DropdownMenuItem>
+            </Link>
           )}
         </div>
         <DropdownMenuItem asChild >
-          <LogoutButton  className="focus:bg-red-600 focus:text-white my-6 mx-auto w-[200px]  h-11  cursor-pointer rounded-full"/>
+          <LogoutButton className="focus:bg-red-600 focus:text-white my-6 mx-auto w-[200px]  h-11  cursor-pointer rounded-full" />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -66,7 +66,7 @@ export default function RootLayout({
                   {/* Main Layout contain Header and Page */}
                   <SidebarInset className="text-foreground  ">
                     <SiteHeader />
-                    <Toaster richColors position="top-right" />
+                    <Toaster richColors  />
                     <div className=' border min-h-screen'>
                       <div className='m-2 md:m-4 shadow rounded-2xl min-h-screen bg-white dark:bg-background-header'>
 
