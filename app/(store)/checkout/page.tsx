@@ -1,20 +1,22 @@
-import { getCart } from '@/server/user';
+import getProfileByUserId, { getCart, getSession } from '@/server/user';
 import getQueryClient from "@/app/(dashboard)/admin/provider/get-query-client"
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
 import CartPage from '@/components/ui/cart-page';
-import CheckOutPage from '@/components/checkout-page';
+import { user } from '@/auth-schema';
 
 export const dynamic = "force-dynamic";
 
 
 export default async function page() {
 
+  const session = await getSession();
+  const userId = session?.user.id;
   const queryClient = getQueryClient()
 
   // Prefetch categories data on the server with proper caching configuration
   await queryClient.prefetchQuery({
-    queryKey: ["cart"],
-    queryFn: getCart,
+    queryKey: ["profile"],
+    queryFn: () => getProfileByUserId(userId!),
      staleTime: 0, // always fetch fresh
   })
 
@@ -22,7 +24,7 @@ export default async function page() {
     <HydrationBoundary state={dehydrate(queryClient)}>
 
       <div >
-        <CheckOutPage />
+        <CartPage />
      
       </div>
     </HydrationBoundary>

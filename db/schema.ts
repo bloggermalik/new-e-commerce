@@ -1,4 +1,4 @@
-import { pgTable, text, uuid, timestamp, boolean, integer, numeric, jsonb, json, pgEnum } from "drizzle-orm/pg-core"
+import { pgTable, text, uuid, timestamp, boolean, integer, numeric, jsonb, json, pgEnum, index } from "drizzle-orm/pg-core"
 import { relations, sql } from "drizzle-orm";
 
 export const roles = pgEnum("roles", ["admin", "user", "moderator"])
@@ -20,6 +20,24 @@ export const user = pgTable("user", {
   banReason: text("ban_reason"),
   banExpires: timestamp("ban_expires"),
 });
+
+export const profile = pgTable("profile", {
+  id:uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  bio: text("bio"),
+  location: text("location"),
+  address: text("address"),
+  mobile:integer("mobile").notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+},
+ (table) => ({
+    userIdx: index("user_id_idx").on(table.userId),
+  })
+)
 
 export const session = pgTable("session", {
   id: text("id").primaryKey(),
@@ -225,6 +243,22 @@ export const cartItems = pgTable("cart_items", {
 
 // RELATIONS
 
+
+export const userRelations = relations(user, ({ one }) => ({
+  profile: one(profile, {
+    fields: [user.id],
+    references: [profile.userId],
+  }),
+}));
+
+export const profileRelations = relations(profile, ({ one }) => ({
+  user: one(user, {
+    fields: [profile.userId],
+    references: [user.id],
+  }),
+}));
+
+
 export const categoryRelations = relations(categories, ({ many }) => ({
   products: many(products),
 }));
@@ -300,4 +334,7 @@ export const schema = {
   attributeRelations,
   cartRelations,
   cartItemsRelations,
+  profile,
+  profileRelations,
+  userRelations,
 };

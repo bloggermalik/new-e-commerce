@@ -3,10 +3,10 @@ import { db } from "@/db/drizzle";
 import { auth } from "@/lib/auth";
 import { asc, desc, eq, is, sql } from "drizzle-orm";
 import { cookies, headers } from "next/headers";
-import { user as users, categories, products, productVariants, variantAttributes, coupons, cart, cartItems } from "@/db/schema";
+import { user as users, categories, products, productVariants, variantAttributes, coupons, cart, cartItems, profile } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { Category, Coupon, NewCategory, NewCoupon, NewProduct, NewUser, Product, Role, Session, User } from "@/types/type";
+import { Category, Coupon, NewCategory, NewCoupon, NewProduct, NewUser, Product, ProfileWithUser, Role, Session, User } from "@/types/type";
 import { can } from "@/lib/auth/check-permission";
 
 
@@ -659,4 +659,22 @@ export async function getCart() {
     console.error("Error fetching cart:", err);
     return [];
   }
+}
+
+
+// Profile details
+
+export default async function getProfileByUserId(userId: string): Promise<ProfileWithUser | null> {
+  const session = await getSession();
+  if (!session) return redirect("/login");
+
+  const userProfile = await db.query.profile.findFirst({
+    where: eq(profile.userId, userId),
+    with: {
+      user: true,
+    },
+  });
+
+  return userProfile ?? null;
+
 }

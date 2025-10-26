@@ -50,10 +50,12 @@ export default function AvatarDropdownClient({ session }: { session: Session }) 
           <span className='font-medium text-lg '>{session?.user?.name}</span>
           {session?.user?.role === 'admin' && <span className='text-xs text-muted-foreground capitalize -mt-4 '>Role: {session?.user?.role}</span>}
           <Separator className='my-3' />
-          <Link href="/profile" className='max-w-xl w-[220px] cursor-pointer'>
+          <Link href="/profile" className='max-w-xl w-[220px] cursor-pointer '>
             <DropdownMenuItem asChild>
               <Button variant="outline" size="sm" className='w-full  h-11  cursor-pointer rounded-full
-              hover:border-primary hover:translate-x-0.5  !transition-all duration-300 ease-in-out'>
+              hover:border-primary ring-0 focus:ring-0 focus:ring-offset-0 
+              focus-visible:ring-0 focus-visible:ring-offset-0
+              hover:translate-x-0.5  !transition-all duration-300 ease-in-out'>
                 <User className='mr-3' />
                 View Profile
               </Button>
@@ -61,7 +63,10 @@ export default function AvatarDropdownClient({ session }: { session: Session }) 
           </Link>
           <Link href="/profile" className='max-w-xl w-[220px] cursor-pointer hidden md:block'>
             <DropdownMenuItem asChild>
-              <Button variant="outline" size="sm" className='w-full  h-11  cursor-pointer rounded-full
+              <Button variant="outline" size="sm" className='w-full  h-11  
+                focus-visible:ring-0 focus-visible:ring-offset-0
+
+              cursor-pointer rounded-full
             hover:border-primary hover:translate-x-0.5  !transition-all duration-300 ease-in-out'>
                 <Logs className='mr-3' />
                 My Orders
@@ -70,7 +75,10 @@ export default function AvatarDropdownClient({ session }: { session: Session }) 
           </Link>
           <Link href="/profile" className='max-w-xl w-[220px]  cursor-pointer mb-3'>
             <DropdownMenuItem asChild>
-              <Button variant="outline" size="sm" className='w-full border  h-11  cursor-pointer rounded-full
+              <Button variant="outline" size="sm" className='w-full border  h-11  
+                            focus-visible:ring-0 focus-visible:ring-offset-0
+
+              cursor-pointer rounded-full
             hover:border-primary hover:translate-x-0.5 !transition-all duration-300 ease-in-out'>
                 <MessageSquareMore className='mr-3' />
                 My Comments
