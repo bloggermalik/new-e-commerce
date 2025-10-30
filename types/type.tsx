@@ -18,6 +18,12 @@ export type ProfileWithUser = Profile & {
   user: User;
 };
 
+// Profile Update in E commerce Store page
+
+export type UserWithProfile = Partial<User> & {
+  profile:  Partial<Profile> | null;
+};
+
 // Product Types with Varients and Attributes
 
 export type Product = InferSelectModel<typeof products> & {

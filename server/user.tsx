@@ -6,7 +6,7 @@ import { cookies, headers } from "next/headers";
 import { user as users, categories, products, productVariants, variantAttributes, coupons, cart, cartItems, profile } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { Category, Coupon, NewCategory, NewCoupon, NewProduct, NewUser, Product, ProfileWithUser, Role, Session, User } from "@/types/type";
+import { Category, Coupon, NewCategory, NewCoupon, NewProduct, NewUser, Product, ProfileWithUser, Role, Session, User, UserWithProfile } from "@/types/type";
 import { can } from "@/lib/auth/check-permission";
 
 
@@ -677,4 +677,78 @@ export default async function getProfileByUserId(userId: string): Promise<Profil
 
   return userProfile ?? null;
 
+}
+
+
+export async function getUserWithProfileById(userId: string): Promise<UserWithProfile | null> {
+  const session = await getSession();
+  if (!session) return redirect("/login");
+
+  const userWithProfile = await db.query.user.findFirst({
+    where: eq(users.id, userId),
+    with: {
+      profile: true,
+    },
+  });
+
+  return userWithProfile ?? null;
+
+}
+
+export async function updateProfile(userId: string, values: UserWithProfile) {
+  console.log("Incoming profile data:", values);
+
+  const session = await getSession();
+  if (!session) return { success: false, message: "Not logged in" };
+
+  try {
+    const result = await db.transaction(async (tx) => {
+      // Update user
+      await tx.update(users)
+        .set({
+          name: values.name ?? undefined,
+          email: values.email ?? undefined,
+          banned: values.banned ?? false,
+          updatedAt: new Date(),
+        })
+        .where(eq(users.id, userId));
+
+      const existingProfile = await tx.query.profile.findFirst({
+        where: eq(profile.userId, userId),
+      });
+
+      console.log("Existing profile:", existingProfile);
+
+      if (existingProfile) {
+        await tx.update(profile)
+          .set({
+            bio: values.profile?.bio ?? null,
+            location: values.profile?.location ?? null,
+            address: values.profile?.address ?? null,
+            mobile: values.profile?.mobile ?? existingProfile.mobile,
+            updatedAt: new Date(),
+          })
+          .where(eq(profile.userId, userId));
+      } else {
+        if (!values.profile?.mobile) {
+          throw new Error("Mobile number required");
+        }
+        await tx.insert(profile).values({
+          userId,
+          bio: values.profile?.bio ?? null,
+          location: values.profile?.location ?? null,
+          address: values.profile?.address ?? null,
+          mobile: values.profile.mobile,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      }
+
+      return await getProfileByUserId(userId);
+    });
+
+    return { success: true, message: "Profile updated", profile: result };
+  } catch (error) {
+    return { success: false, message: "Profile update failed" };
+  }
 }

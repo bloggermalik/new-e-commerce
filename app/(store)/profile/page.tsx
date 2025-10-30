@@ -1,4 +1,4 @@
-import getProfileByUserId, { getSession, } from "@/server/user";
+import  { getSession, getUserWithProfileById, } from "@/server/user";
 import getQueryClient from "@/app/(dashboard)/admin/provider/get-query-client";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import UserProfile from "@/components/user-profile";
@@ -10,19 +10,19 @@ export default async function Page() {
   const userId = session?.user.id;
 
   const queryClient = getQueryClient();
-  const profile = await getProfileByUserId(userId!);
+  const userWithProfile = await getUserWithProfileById(userId!);
 
   await queryClient.prefetchQuery({
-    queryKey: ["profile", userId],
-    queryFn: () => profile, // 👈 prevent refetch
+    queryKey: ["user-profile", userId],
+    queryFn: () => userWithProfile, // 👈 prevent refetch
   });
 
-  console.log("My profile is", profile);
+  console.log("My profile is", userWithProfile);
   
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <UserProfile profile={profile} />
+      <UserProfile userWithProfile={userWithProfile} />
     </HydrationBoundary>
   );
 }
