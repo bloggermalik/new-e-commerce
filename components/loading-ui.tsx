@@ -2,7 +2,7 @@ import { Loader2 } from "lucide-react";
 
 
 
-export default function Loading() {
+export default function LoadingUI() {
 
 return (
   <div className="flex justify-center h-screen">
