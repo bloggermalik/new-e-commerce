@@ -263,7 +263,7 @@ function VariantEditor({ index, form, removeVariant }: { index: number; form: Us
                                         </button>
 
                                         {/* ✅ Show already uploaded images */}
-                                        {field.value?.length > 0 && (
+                                        {Array.isArray(field.value) && field.value.length > 0 && (
                                             <div className="w-full mt-4 flex flex-wrap gap-3 justify-center">
                                                 {field.value.map((url: string, i: number) => (
                                                     <div
