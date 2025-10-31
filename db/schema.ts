@@ -27,7 +27,7 @@ export const profile = pgTable("profile", {
   bio: text("bio"),
   location: text("location"),
   address: text("address"),
-  mobile:integer("mobile").notNull().unique(),
+  mobile:text("mobile").notNull().unique(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
       .defaultNow()
