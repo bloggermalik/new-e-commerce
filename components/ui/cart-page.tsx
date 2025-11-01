@@ -8,7 +8,9 @@ import Image from "next/image";
 import { toast } from "sonner";
 import StepProgressBar from "../step-progress-bar";
 import Link from "next/link";
-import { ArrowBigRight, CircleMinus, CirclePlus, WalletCards } from "lucide-react";
+import { CircleMinus, CirclePlus, WalletCards } from "lucide-react";
+import EastIcon from '@mui/icons-material/East';
+
 import { useRouter } from "next/navigation";
 
 export default function CartPage() {
@@ -154,9 +156,9 @@ export default function CartPage() {
                   action: "decrease",
                 })
               }
-              className="h-8 w-8 text-lg bg-white border border-0"
+              className="h-6 w-6 text-lg bg-white border border-0"
             >
-              <CircleMinus className="!h-8 !w-8 !text-gray-400" />
+              <CircleMinus className="!h-6 !w-6 !text-gray-400" />
 
             </Button>
 
@@ -171,9 +173,9 @@ export default function CartPage() {
                   action: "increase",
                 })
               }
-              className="h-8 w-8 text-lg bg-white border-0"
+              className="h-6 w-6 text-lg bg-white border-0"
             >
-              <CirclePlus className="!h-8 !w-8 !text-gray-400" />
+              <CirclePlus className="!h-6 !w-6 !text-gray-400" />
 
             </Button>
           </div>
@@ -187,14 +189,12 @@ export default function CartPage() {
         <Button
           variant="outline"
           onClick={() => router.push("/checkout")}
-          className="max-w-md  text-md bg-primary text-white shadow hover:bg-white 
-          border border-primary flex items-center gap-2
-          hover:text-primary !transition-colors duration-200 font-medium
-          "
+                        className="w-[210px]  text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
+
         >
           <WalletCards className=" hover:text-primary !transition-colors duration-200"/>
           Proceed to Checkout
-          <ArrowBigRight />
+              <EastIcon className="" />
         </Button>
       </div>
 
