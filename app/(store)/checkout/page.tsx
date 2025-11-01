@@ -36,14 +36,14 @@ export default async function page() {
   if (profileData?.mobile === "" || profileData?.address === "") {
     return (
       <div className="space-y-4 mt-40 p-8 max-w-[600px] mx-auto flex flex-col h-[50vh] text-center text-red-500">
-        <Alert severity="warning">Please update your profile before checkout.</Alert>
+        <Alert severity="warning">Please update your profile first.</Alert>
 
         <div className="flex justify-end w-full">
           <Link href="/profile">
             <Button
               variant="outline"
               color="outline"
-              className="w-[160px] mb-10 text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
+              className="w-[160px]  text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
             >
               Update Profile
               <EastIcon className="" />
