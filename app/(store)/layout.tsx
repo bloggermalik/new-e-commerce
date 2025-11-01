@@ -68,7 +68,7 @@ export default function RootLayout({
                     <div className="flex flex-col h-[100dvh] overflow-hidden">
                       <SiteHeader />
 
-                  <div className="flex-1 border m-2 md:m-4 shadow rounded-2xl bg-white dark:bg-background-header overflow-auto pb-14 md:pb-0">
+                      <div className="flex-1 border m-2 md:m-4 shadow rounded-2xl bg-white dark:bg-background-header overflow-auto pb-14 md:pb-0">
                         {children}
                       </div>
 

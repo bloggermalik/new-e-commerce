@@ -9,6 +9,8 @@ import TextField from '@mui/material/TextField';
 import { useMutation } from "@tanstack/react-query";
 import { updateProfile } from "@/server/user";
 import { toast } from "sonner";
+import { toCamelCase } from "drizzle-orm/casing";
+import { Loader2 } from "lucide-react";
 
 
 const formSchema = z.object({
@@ -61,8 +63,18 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
     function onSubmit(data: z.infer<typeof formSchema>) {
         mutate(data);
     }
-    return (
-        <div className="max-w-4xl border m-auto  flex justify-center">
+    return (<>
+        <div className=" py-8 justify-center items-center flex flex-col">
+            <h1 className="font-bold text-xl">
+                {(() => {
+                    const name = (userWithProfile?.name ?? "").toWellFormed().trim();
+                    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+                })()}
+            </h1>
+            <p className="text-gray-500 text-xs">Update your profile information below:</p>
+        </div>
+
+        <div className="max-w-4xl m-auto  flex justify-center">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
@@ -72,7 +84,7 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
                             <FormItem>
                                 <FormControl>
                                     {/* <Input placeholder="Whats Your name" {...field} /> */}
-                                      <TextField
+                                    <TextField
                                         {...field}
                                         id="outlined-basic"
                                         size="small"
@@ -94,7 +106,7 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
                             <FormItem>
                                 <FormControl>
                                     {/* <Input placeholder="Email address" {...field} readOnly={true} /> */}
-                                      <TextField
+                                    <TextField
                                         {...field}
                                         id="outlined-basic"
                                         size="small"
@@ -119,17 +131,17 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
                                 <FormControl>
                                     {/* <Input placeholder="shadcn" {...field} readOnly={true} value={field.value ? "True" : "False"} /> */}
 
-                                       <TextField
+                                    <TextField
                                         {...field}
                                         id="outlined-basic"
                                         size="small"
                                         label="Is Banned"
                                         variant="outlined"
-                                         slotProps={{
-                                                input: {
+                                        slotProps={{
+                                            input: {
                                                 readOnly: true,
-                                                },
-                                            }}
+                                            },
+                                        }}
                                         value={field.value === null ? "" : field.value}
                                         onChange={(e) => {
                                             field.onChange(e.target.value);
@@ -148,7 +160,7 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                      <TextField
+                                    <TextField
                                         {...field}
                                         id="outlined-basic"
                                         size="small"
@@ -171,7 +183,7 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                     <TextField
+                                    <TextField
                                         {...field}
                                         id="outlined-basic"
                                         size="small"
@@ -231,12 +243,14 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
                             </FormItem>
                         )}
                     />
-                    <Button variant="outline" type="submit" disabled={isPending}>
-                        {isPending ? "Loading..." : "Submit"}
+                    <Button variant="outline" type="submit" disabled={isPending}
+                          className=" mt-3 w-[120px] text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
+>
+                        {isPending ? <Loader2  className="animate-spin !text-blue-800"/> : "Submit"}
                     </Button>
                 </form>
             </Form>
 
         </div>
-    )
+    </>)
 }
