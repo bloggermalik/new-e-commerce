@@ -2,7 +2,7 @@
 import { UserWithProfile } from "@/types/type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import z from "zod";
+import z, { readonly } from "zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Button } from "./ui/button";
 import TextField from '@mui/material/TextField';
@@ -105,17 +105,22 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    {/* <Input placeholder="Email address" {...field} readOnly={true} /> */}
                                     <TextField
+                                    
                                         {...field}
                                         id="outlined-basic"
                                         size="small"
                                         label="Email"
+                                        slotProps={{
+                                            input: { readOnly: true, className: "!text-gray-400" }
+                                        }}
                                         variant="outlined"
                                         value={field.value === null ? "" : field.value}
                                         onChange={(e) => {
                                             field.onChange(e.target.value);
+
                                         }}
+                                        
                                     />
                                 </FormControl>
 
@@ -140,9 +145,10 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
                                         slotProps={{
                                             input: {
                                                 readOnly: true,
+                                                className: "!text-gray-400",
                                             },
                                         }}
-                                        value={field.value === null ? "" : field.value}
+                                        value={field.value === true ? "Yes" : "No"}
                                         onChange={(e) => {
                                             field.onChange(e.target.value);
                                         }}
@@ -244,7 +250,7 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
                         )}
                     />
                     <Button variant="outline" type="submit" disabled={isPending}
-                          className=" mt-3 w-[120px] mb-10 text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
+                          className=" w-[120px] mb-10 text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
 >
                         {isPending ? <Loader2  className="animate-spin !text-blue-800"/> : "Submit"}
                     </Button>
