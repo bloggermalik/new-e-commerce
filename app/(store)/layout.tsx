@@ -49,7 +49,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ClientMuiProvider>
-            <div className=" mx-auto max-w-[1920px] min-h-screen">
+            <div className=" mx-auto max-w-[1920px]">
               {/* TanStack Query Provider */}
               <Providers>
                 <SidebarProvider defaultOpen={false}
@@ -64,16 +64,18 @@ export default function RootLayout({
                     <AppSidebarNew />
                   </div>
                   {/* Main Layout contain Header and Page */}
-                  <SidebarInset className="text-foreground  ">
-                    <SiteHeader />
-                    <Toaster richColors  />
-                    <div className=' border min-h-screen'>
-                      <div className='m-2 md:m-4 shadow rounded-2xl min-h-screen bg-white dark:bg-background-header'>
+                  <SidebarInset className="text-foreground">
+                    <div className="flex flex-col h-[100dvh] overflow-hidden">
+                      <SiteHeader />
 
+                      <div className="flex-1 border m-2 md:m-4 shadow rounded-2xl bg-white dark:bg-background-header overflow-auto">
                         {children}
                       </div>
+
+                      <Toaster richColors />
                     </div>
                   </SidebarInset>
+
                   {/* Bottom navigation appeared in Mobile View */}
                   <BottomNav />
                 </SidebarProvider>

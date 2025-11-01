@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import TextField from '@mui/material/TextField';
 import { useMutation } from "@tanstack/react-query";
 import { updateProfile } from "@/server/user";
@@ -71,9 +70,19 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Whats Your name" {...field} />
+                                    {/* <Input placeholder="Whats Your name" {...field} /> */}
+                                      <TextField
+                                        {...field}
+                                        id="outlined-basic"
+                                        size="small"
+                                        label="Name"
+                                        variant="outlined"
+                                        value={field.value === null ? "" : field.value}
+                                        onChange={(e) => {
+                                            field.onChange(e.target.value);
+                                        }}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -83,9 +92,19 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Email address" {...field} readOnly={true} />
+                                    {/* <Input placeholder="Email address" {...field} readOnly={true} /> */}
+                                      <TextField
+                                        {...field}
+                                        id="outlined-basic"
+                                        size="small"
+                                        label="Email"
+                                        variant="outlined"
+                                        value={field.value === null ? "" : field.value}
+                                        onChange={(e) => {
+                                            field.onChange(e.target.value);
+                                        }}
+                                    />
                                 </FormControl>
 
                                 <FormMessage />
