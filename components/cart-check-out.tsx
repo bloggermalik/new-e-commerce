@@ -11,6 +11,7 @@ import { Session } from "@/types/type";
 import Link from "next/link";
 import { TextField } from "@mui/material";
 import StepProgressBar from "./step-progress-bar";
+import PayNowButton from "./pay-now-button";
 
 interface CartItem {
     id: string;
@@ -204,13 +205,24 @@ export default function CartCheckOut({
                         </CardContent>
                     </Card>
                     <div className="flex mx-auto w-full justify-end">
-                        <Button
+                        {/* <Button
                             className=" w-[130px]  text-sm font-semibold border-primary 
                             text-white  bg-primary hover:bg-white hover:text-primary transition-colors"
                             variant="outline">
                             Pay Now
                             <PaymentIcon className=" ml-2 !transition-colors duration-200" />
-                        </Button>
+                        </Button> */}
+                        <PayNowButton
+                            cartData={cartData}
+                            userId={session?.user?.id}
+                            shippingAddress={{
+                                name: session?.user?.name,
+                                address: profileData?.address!,
+                                phone: profileData?.mobile,
+                            }}
+                        />
+
+
                     </div>
                 </div>
             </div>
