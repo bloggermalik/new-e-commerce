@@ -58,7 +58,7 @@ export default async function page() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div >
-        <CartCheckOut profileData={profileData} cartData={cartData} />
+        <CartCheckOut profileData={profileData} cartData={cartData} session={session!} />
       </div>
     </HydrationBoundary>
   )

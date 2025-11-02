@@ -250,7 +250,7 @@ export default function UserProfile({ userWithProfile }: { userWithProfile: User
                         )}
                     />
                     <Button variant="outline" type="submit" disabled={isPending}
-                          className=" w-[130px] mb-10 text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
+                          className=" w-[130px]  text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
 >
                         {isPending ? <Loader2  className="animate-spin !text-blue-800"/> : "Save Profile"}
                        {isPending=== false && <SaveIcon  fontSize="small"/> }

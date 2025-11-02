@@ -48,10 +48,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClientMuiProvider>
-            <div className=" mx-auto max-w-[1920px]">
-              {/* TanStack Query Provider */}
-              <Providers>
+          <Providers>
+
+            <ClientMuiProvider>
+              <div className=" mx-auto max-w-[1920px]">
+                {/* TanStack Query Provider */}
                 <SidebarProvider defaultOpen={false}
                   style={
                     {
@@ -68,7 +69,9 @@ export default function RootLayout({
                     <div className="flex flex-col h-[100dvh] overflow-hidden">
                       <SiteHeader />
 
-                      <div className="flex-1 border m-2 md:m-4 shadow rounded-2xl bg-white dark:bg-background-header overflow-auto pb-14 md:pb-0">
+                    {/* It is main content area */}
+
+                      <div className="flex-1 border mb-16 md:mb-0 bg-white dark:bg-background-header overflow-auto pb-14 md:pb-0">
                         {children}
                       </div>
 
@@ -79,9 +82,9 @@ export default function RootLayout({
                   {/* Bottom navigation appeared in Mobile View */}
                   <BottomNav />
                 </SidebarProvider>
-              </Providers>
-            </div>
-          </ClientMuiProvider>
+              </div>
+            </ClientMuiProvider>
+          </Providers>
         </ThemeProvider>
       </body>
     </html>
