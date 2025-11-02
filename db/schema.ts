@@ -241,6 +241,62 @@ export const cartItems = pgTable("cart_items", {
     .notNull(),
 });
 
+export const orderStatusEnum = pgEnum("order_status", [
+  "pending",
+  "processing",
+  "shipped",
+  "delivered",
+  "cancelled",
+  "returned",
+]);
+
+// 💳 Payment status enum
+export const paymentStatusEnum = pgEnum("payment_status", [
+  "pending",
+  "paid",
+  "failed",
+  "refunded",
+]);
+
+export const orders = pgTable("orders", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  orderNumber: text("order_number").notNull().unique(),
+  status: orderStatusEnum("status").notNull().default("pending"),
+  paymentStatus: paymentStatusEnum("payment_status").notNull().default("pending"),
+  paymentMethod: text("payment_method").default("razorpay"), // razorpay, cod, etc.
+  transactionId: text("transaction_id"), // Razorpay order/payment ID
+  subtotal: numeric("subtotal", { precision: 10, scale: 2 }).notNull(),
+  tax: numeric("tax", { precision: 10, scale: 2 }).default("0.00"),
+  discount: numeric("discount", { precision: 10, scale: 2 }).default("0.00"),
+  total: numeric("total", { precision: 10, scale: 2 }).notNull(),
+  shippingAddress: text("shipping_address").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const orderItems = pgTable("order_items", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  orderId: uuid("order_id").notNull().references(() => orders.id, { onDelete: "cascade" }),
+  productId: uuid("product_id").notNull().references(() => products.id, { onDelete: "cascade" }),
+  quantity: integer("quantity").notNull(),
+  price: numeric("price", { precision: 10, scale: 2 }).notNull(), 
+  total: numeric("total", { precision: 10, scale: 2 }).notNull(), 
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+
+// 🔗 Relations (optional but recommended)
+export const orderRelations = relations(orders, ({ one, many }) => ({
+  user: one(user, {
+    fields: [orders.userId],
+    references: [user.id],
+  }),
+  items: many(orderItems), // defined below
+}));
+
+
+
 // RELATIONS
 
 

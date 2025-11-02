@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { Session } from "@/types/type";
 import Link from "next/link";
 import { TextField } from "@mui/material";
+import StepProgressBar from "./step-progress-bar";
 
 interface CartItem {
     id: string;
@@ -63,6 +64,7 @@ export default function CartCheckOut({
 
     return (
         <div className="max-w-6xl mx-auto px-3 md:px-6 py-6">
+            <StepProgressBar />
             {/* GRID LAYOUT: Two Columns on Desktop */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* LEFT COLUMN */}
@@ -72,6 +74,13 @@ export default function CartCheckOut({
                         <CardHeader>
                             <CardTitle className="text-md">
                                 Shipping Information
+                                <Button
+                                    variant="link"
+                                    className="text-sm float-right p-0"
+                                    asChild
+                                >
+                                    <Link href="/profile">Edit</Link>
+                                </Button>
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-1 text-sm text-muted-foreground">
@@ -148,23 +157,19 @@ export default function CartCheckOut({
                 <div className="space-y-6">
                     {/* --- Coupon Section --- */}
                     <Card className="shadow-sm border border-border">
-                        <CardHeader>
-                            <CardTitle className="text-md ">
-                                Apply Coupon
-                            </CardTitle>
-                        </CardHeader>
+
                         <CardContent>
-                            <div className="flex gap-3">
+                            <div className="flex justify-between gap-2 items-center   ">
                                 <TextField
                                     id="outlined-basic"
                                     size="small"
                                     label="Have a coupon?"
                                     variant="outlined"
-                                   
+
                                 />
                                 <Button
                                     variant="outline"
-                                    className=" w-[100px]  text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
+                                    className=" w-[100px] h-[40px] text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
 
                                     onClick={handleApplyCoupon}
                                 >
@@ -196,17 +201,17 @@ export default function CartCheckOut({
                                 <span>₹{total.toFixed(2)}</span>
                             </div>
 
-                            <div className="flex mx-auto w-full justify-center">
-                            <Button 
-                             className=" w-[210px]  text-sm font-semibold border-primary 
-                            text-white  bg-primary hover:bg-white hover:text-primary transition-colors"
-                            variant="outline">
-                                Proceed to Payment
-                                <PaymentIcon className=" ml-2 !transition-colors duration-200"/>
-                            </Button>
-                            </div>
                         </CardContent>
                     </Card>
+                    <div className="flex mx-auto w-full justify-end">
+                        <Button
+                            className=" w-[130px]  text-sm font-semibold border-primary 
+                            text-white  bg-primary hover:bg-white hover:text-primary transition-colors"
+                            variant="outline">
+                            Pay Now
+                            <PaymentIcon className=" ml-2 !transition-colors duration-200" />
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>
