@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import PaymentIcon from '@mui/icons-material/Payment';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
@@ -205,13 +204,6 @@ export default function CartCheckOut({
                         </CardContent>
                     </Card>
                     <div className="flex mx-auto w-full justify-end">
-                        {/* <Button
-                            className=" w-[130px]  text-sm font-semibold border-primary 
-                            text-white  bg-primary hover:bg-white hover:text-primary transition-colors"
-                            variant="outline">
-                            Pay Now
-                            <PaymentIcon className=" ml-2 !transition-colors duration-200" />
-                        </Button> */}
                         <PayNowButton
                             cartData={cartData}
                             userId={session?.user?.id}

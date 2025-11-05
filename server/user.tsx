@@ -3,7 +3,7 @@ import { db } from "@/db/drizzle";
 import { auth } from "@/lib/auth";
 import { asc, desc, eq, is, sql } from "drizzle-orm";
 import { cookies, headers } from "next/headers";
-import { user as users, categories, products, productVariants, variantAttributes, coupons, cart, cartItems, profile } from "@/db/schema";
+import { user as users, categories, products, productVariants, variantAttributes, coupons, cart, cartItems, profile, orders, orderItems } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Category, Coupon, NewCategory, NewCoupon, NewProduct, NewUser, Product, ProfileWithUser, Role, Session, User, UserWithProfile } from "@/types/type";
@@ -751,4 +751,26 @@ export async function updateProfile(userId: string, values: UserWithProfile) {
   } catch (error) {
     return { success: false, message: "Profile update failed" };
   }
+}
+
+
+// Fetch Order and Order Items by User ID
+
+export async function getOrdersByUserId(userId: string) {
+  const session = await getSession();
+  if (!session) return redirect("/login");
+
+  const ordersOfUser = await db.query.orders.findMany({
+    where: eq(orders.userId, userId),
+    with: {
+      orderItems: {
+        with: {
+          product: true, // optional, if you want product details
+        },
+      },
+    },
+    orderBy: [desc(orders.createdAt)],
+  });
+
+  return ordersOfUser;
 }

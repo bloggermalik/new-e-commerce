@@ -1,4 +1,4 @@
-import { user as users, products, categories, productVariants, variantAttributes, productRelations, coupons, profile  } from "@/db/schema";
+import { user as users, products, categories, productVariants, variantAttributes, productRelations, coupons, profile, orders, orderItems  } from "@/db/schema";
 import { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import { Type } from "lucide-react";
 
@@ -23,6 +23,19 @@ export type ProfileWithUser = Profile & {
 export type UserWithProfile = Partial<User> & {
   profile:  Partial<Profile> | null;
 };
+
+// Order Types
+
+export type Order = InferSelectModel<typeof orders>;
+export type OrderItem = InferSelectModel<typeof orderItems>;
+
+export type UserOrder = Order & {
+  orderItems: (OrderItem & {
+    product: Product;
+  })[];
+};
+
+
 
 // Product Types with Varients and Attributes
 

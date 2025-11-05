@@ -61,7 +61,7 @@ export default function AvatarDropdownClient({ session }: { session: Session }) 
               </Button>
             </DropdownMenuItem>
           </Link>
-          <Link href="/profile" className='max-w-xl w-[220px] cursor-pointer hidden md:block'>
+          <Link href="/orders" className='max-w-xl w-[220px] cursor-pointer hidden md:block'>
             <DropdownMenuItem asChild>
               <Button variant="outline" size="sm" className='w-full  h-11  
                 focus-visible:ring-0 focus-visible:ring-offset-0

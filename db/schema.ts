@@ -292,7 +292,18 @@ export const orderRelations = relations(orders, ({ one, many }) => ({
     fields: [orders.userId],
     references: [user.id],
   }),
-  items: many(orderItems), // defined below
+  orderItems: many(orderItems), // defined below
+}));
+
+export const orderItemsRelations = relations(orderItems, ({ one }) => ({
+  order: one(orders, {
+    fields: [orderItems.orderId],
+    references: [orders.id],
+  }),
+  product: one(products, {
+    fields: [orderItems.productId],
+    references: [products.id],
+  }),
 }));
 
 
@@ -393,4 +404,7 @@ export const schema = {
   profile,
   profileRelations,
   userRelations,
+  orderItems,
+  orderRelations,
+  orderItemsRelations,
 };
