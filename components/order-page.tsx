@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { UserOrder } from "@/types/type";
+import Image from "next/image";
 
 
 
@@ -18,7 +19,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
   }
 
   return (
-    <div className="container mx-auto px-4 py-10 space-y-6">
+    <div className="flex flex-col w-full max-w-4xl mx-auto px-4 py-10 space-y-6">
       <h1 className="text-3xl font-bold mb-6">My Orders</h1>
 
       <div className="space-y-6">
@@ -52,37 +53,26 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <div className="text-sm">
-                  <p>
-                    <span className="font-semibold">Payment Method:</span>{" "}
-                    {order.paymentMethod}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Transaction ID:</span>{" "}
-                    {order.transactionId || "—"}
-                  </p>
-                </div>
+              
 
-                <Separator />
 
                 <div className="space-y-4">
-                  <h3 className="font-semibold text-lg">Order Items</h3>
-
-                  <div className="space-y-3">
+                  <div className="bg-primary/9 rounded-lg p-4">
                     {order.orderItems.map((item: any) => (
                       <div
                         key={item.id}
-                        className="flex justify-between items-start border p-3 rounded-lg"
+                        className="flex justify-between items-start  p-3 rounded-lg"
                       >
                         <div>
-                          <p className="font-medium text-gray-800">
+                        
+                          <p className="font-medium text-xs text-gray-800">
                             {item.product?.name}
                           </p>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-xs text-gray-500">
                             Qty: {item.quantity} × ₹{item.price}
                           </p>
                         </div>
-                        <p className="font-semibold">₹{item.total}</p>
+                        <p className="font-medium text-xs text-gray-800">₹{item.total}</p>
                       </div>
                     ))}
                   </div>
