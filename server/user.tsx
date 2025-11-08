@@ -662,6 +662,20 @@ export async function getCart() {
 }
 
 
+
+// Delete cart item
+export async function deleteCartItem(cartItemId: string) {
+  const session = await getSession();
+  if (!session) return { success: false, message: "Please Login First" };
+  try {
+    await db.delete(cartItems).where(eq(cartItems.id, cartItemId));
+    return { success: true, message: "Item removed from cart" };
+  } catch (error) {
+    return { success: false, message: "Error removing item from cart" };
+  }
+}
+
+
 // Profile details
 
 export default async function getProfileByUserId(userId: string): Promise<ProfileWithUser | null> {
@@ -703,7 +717,6 @@ export async function updateProfile(userId: string, values: UserWithProfile) {
 
   try {
     const result = await db.transaction(async (tx) => {
-      // Update user
       await tx.update(users)
         .set({
           name: values.name ?? undefined,
