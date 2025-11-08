@@ -765,7 +765,11 @@ export async function getOrdersByUserId(userId: string) {
     with: {
       orderItems: {
         with: {
-          product: true, // optional, if you want product details
+          product: {
+            with: {
+              variants: true,
+            },
+          },
         },
       },
     },

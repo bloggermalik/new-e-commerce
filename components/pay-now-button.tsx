@@ -102,8 +102,8 @@ export default function PayNowButton({
             });
 
             if (verify.data.ok) {
-              toast.success("Payment successful!");
-              window.location.href = `/order/${localOrderId}`;
+              toast.loading("Payment successful! Please wait");
+              window.location.href = `/orders`;
             } else {
               toast.error("Payment verification failed");
             }
