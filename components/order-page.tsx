@@ -30,7 +30,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
   }
 
   return (
-    <div className="flex flex-col w-full max-w-4xl mx-auto px-0 sm:px-4 py-10 space-y-6">
+    <div className="flex flex-col w-full max-w-3xl mx-auto px-0 sm:px-4 py-10 space-y-6">
       <h1 className="text-xl font-bold mb-6 mx-auto">My Orders</h1>
 
       <div className="space-y-6">
@@ -39,7 +39,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
           const address = JSON.parse(order.shippingAddress);
           return (
             <Card key={order.id} className="!border-none !px-0 py-0  shadow-none">
-              <CardHeader className=" flex flex-col px-3 sm:px-6 gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <CardHeader className=" flex flex-col px-4 sm:px-6 gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <CardTitle className="text-sm font-semibold">
                     Order {order.orderNumber}
@@ -56,7 +56,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-4 px-3 sm:px-6">
+              <CardContent className="space-y-4 px-4 sm:px-6">
                 <div className="space-y-4">
                   <div className="bg-primary/9 rounded-lg p-2 sm:p-4">
                     {order.orderItems.map((item: OrderItem & { product: Product }) => {
@@ -66,7 +66,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
 
                         <div
                           key={item.id}
-                          className="flex justify-between items-start p-3 rounded-lg"
+                          className="flex justify-between items-start px-2 py-4 rounded-lg"
                         >
                           <div className="flex items-start">
                             <Image
@@ -86,7 +86,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                             </div>
                           </div>
 
-                          <p className="font-medium text-xs text-gray-800">₹{item.total}</p>
+                          <p className="font-medium text-xs text-gray-800 ml-4">₹{item.total}</p>
                         </div>
 
                       )
@@ -101,8 +101,8 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                       <DrawerTrigger asChild>
                         <Button variant="outline" className="text-xs sm:text-sm h-6 sm:h-8 font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors">More</Button>
                       </DrawerTrigger>
-                      <DrawerContent className="p-6 mb-10">
-                        <DrawerHeader className="border-b pb-4 mb-4">
+                      <DrawerContent className="p-4 sm:p-6 mb-10">
+                        <DrawerHeader className="  mb-4">
                           <DrawerTitle className="text-xl font-semibold">
                             Order Summary
                           </DrawerTitle>
