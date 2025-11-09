@@ -79,7 +79,7 @@ export function SingleProductPage(product: Product) {
             </div>
 
             {/* Right side — Product Info */}
-            <div className="flex flex-col space-y-2 text-gray-900 font-sans">
+            <div className="flex flex-col space-y-1 text-gray-900 font-sans">
 
                 {/* Product Name */}
                 <h1 className="text-xl font-semibold">{product.name}</h1>
@@ -133,9 +133,7 @@ export function SingleProductPage(product: Product) {
 
                 
 
-                {/* Description */}
-                <p className="text-gray-600 leading-relaxed text-base">{product.description}</p>
-
+               
                 {/* Add to Cart / Buy Now Buttons */}
                 <div className="flex gap-3 pt-2">
                     <Button className="bg-primary text-white hover:bg-primary/90">
@@ -143,6 +141,8 @@ export function SingleProductPage(product: Product) {
                     </Button>
                     <Button variant="outline">Buy Now</Button>
                 </div>
+                {/* Description */}
+                <p className="text-gray-600 leading-relaxed text-base">{product.description}</p>
 
                 {/* Comments Section */}
                 <div className="mt-6">
