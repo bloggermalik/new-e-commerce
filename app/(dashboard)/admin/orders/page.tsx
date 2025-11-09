@@ -33,7 +33,9 @@ const [canCreate, canUpdate, canDelete, canView] = await Promise.all([
 
   const order = await getAllOrders();
 
-  console.log("Prefetched Orders Data", order);
+  // console.log("Prefetched Orders Data", order);
+  // console.log("Prefetched Orders Data", order[0]?.orderItems);
+
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

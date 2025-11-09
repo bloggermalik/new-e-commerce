@@ -311,6 +311,26 @@ export async function getCategoryById(id: string): Promise<Category | null> {
 
 // CRUD FOR PRODUCTS
 
+
+ export async function getProductBySlug(slug: string): Promise<Product | null> {
+
+  const session = await getSession();
+  if (!session) return null;
+  const product = await db.query.products.findFirst({
+    where: eq(products.slug, slug),
+    with: {
+      category: true,
+      variants: {
+        with: {
+          attributes: true,
+        },
+      },
+    },
+  });
+
+  return product ?? null;
+      }
+
 export async function getProducts(): Promise<Product[]> {
   const allProducts = await db.query.products.findMany({
     with: {

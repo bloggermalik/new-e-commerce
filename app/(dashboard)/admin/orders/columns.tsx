@@ -224,21 +224,14 @@ export const columns=({ canUpdate, canDelete, canView,canCreate }: { canUpdate: 
     },
 
   },
-  {
-    accessorKey: "banned",
-    header: () => <div className="">Banned</div>,
-    cell: ({ row }) => {
-      const banned = row.getValue("banned") as boolean
-      return <div className="font-outfit text-gray-900 dark:text-gray-300">{banned ? "Yes" : "No"}</div>
-    },
-  },
-  {
+  
+   {
     id: "actions",
     cell: ({ row }) => {
       const user = row.original
       return (
         <div className="">
-          
+          {/* <DeleteUser user={user} canDelete={canDelete} canUpdate={canUpdate}/> */}
         </div>)
      
     },

@@ -36,7 +36,7 @@ export default function InitialDataTanstack({ canUpdate, canDelete, canView, can
     )
   }
 
-  console.log("Prefetch data is Order", data);
+  // console.log("Prefetch data is Order", data);
   
 
   return <DataTable columns={columns({canCreate, canDelete, canUpdate, canView})} canCreate={canCreate} canDelete={canDelete} canUpdate={canUpdate} canView={canView} data={data ?? []} />
