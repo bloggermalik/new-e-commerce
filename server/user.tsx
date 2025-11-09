@@ -791,3 +791,45 @@ export async function getOrdersByUserId(userId: string) {
 
   return ordersOfUser;
 }
+
+
+export async function getAllOrders() {
+  const session = await getSession();
+  if (!session) return redirect("/login");
+
+  const allOrders = await db.query.orders.findMany({
+    with: {
+      user: true, // 👈 include user info
+      orderItems: {
+        with: {
+          product: {
+            with: {
+              variants: true,
+              category: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: [desc(orders.createdAt)],
+  });
+
+  return allOrders ?? [];
+}
+
+
+
+
+export async function updateOrderStatus(orderId: string, newStatus: "pending" | "processing" | "shipped" | "delivered" | "cancelled" | "returned") {
+  try {
+    await db
+      .update(orders)
+      .set({ status: newStatus })
+      .where(eq(orders.id, orderId))
+
+    return { success: true }
+  } catch (error) {
+    console.error("Failed to update order status:", error)
+    throw new Error("Database update failed")
+  }
+}

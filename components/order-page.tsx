@@ -17,6 +17,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 
 
@@ -30,11 +31,11 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
   }
 
   return (
-    <div className="flex flex-col w-full max-w-3xl mx-auto px-0 sm:px-4 py-10 space-y-6">
+    <div className="flex flex-col w-full max-w-3xl mx-auto px-0 sm:px-4 pt-6 space-y-6">
       <h1 className="text-xl font-bold mb-6 mx-auto">My Orders</h1>
 
       <div className="space-y-6">
-        {usersOrders.map((order) => {
+        {usersOrders.map((order,index) => {
           if (order.status === "pending" || order.paymentStatus !== "paid") { return null; }
           const address = JSON.parse(order.shippingAddress);
           return (
@@ -69,6 +70,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                           className="flex justify-between items-start px-2 py-4 rounded-lg"
                         >
                           <div className="flex items-start">
+                            <Link href={`/product/${item.product?.id}`}>
                             <Image
                               src={imageUrl}
                               alt={item.product?.name || "Product image"}
@@ -76,10 +78,13 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                               height={40}
                               className="w-10 h-10 object-cover rounded-md mr-4"
                             />
+                            </Link>
                             <div>
+                              <Link href={`/product/${item.product?.id}`}>
                               <p className="font-medium text-xs text-gray-800">
                                 {item.product?.name}
                               </p>
+                              </Link>
                               <p className="text-xs text-gray-500">
                                 Qty: {item.quantity} × ₹{item.price}
                               </p>
@@ -176,7 +181,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                   </div>
                 </div>
               </CardContent>
-              <Separator />
+             {index !== usersOrders?.length - 1 && <Separator /> }
             </Card>
           );
         })}

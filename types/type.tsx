@@ -28,10 +28,20 @@ export type UserWithProfile = Partial<User> & {
 
 export type Order = InferSelectModel<typeof orders>;
 export type OrderItem = InferSelectModel<typeof orderItems>;
-
+export type Variant = InferSelectModel<typeof productVariants>;
 export type UserOrder = Order & {
   orderItems: (OrderItem & {
     product: Product;
+  })[];
+};
+
+export type AllOrder = Order & {
+  user: User;
+  orderItems: (OrderItem & {
+    product: Product & {
+      variants: Variant[];
+      category: Category;
+    };
   })[];
 };
 

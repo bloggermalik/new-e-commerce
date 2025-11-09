@@ -15,6 +15,7 @@ import {
   IconHelp,
   IconHome,
   IconInnerShadowTop,
+  IconMenuOrder,
   IconReport,
   IconSearch,
   IconSettings,
@@ -72,6 +73,11 @@ const data = {
       title: "Categories",
       url: "/admin/categories",
       icon: IconCategory2,
+    },
+    {
+      title: "Orders",
+      url: "/admin/orders",
+      icon: IconMenuOrder,
     },
   ],
   navClouds: [
