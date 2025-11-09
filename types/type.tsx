@@ -36,10 +36,10 @@ export type UserOrder = Order & {
 };
 
 export type AllOrder = Order & {
-  user: User;
+  user?: User; // optional if API doesn't return full user
   orderItems: (OrderItem & {
-    product: Product & {
-      variants: Variant[];
+    product: InferInsertModel<typeof products> & {
+      variants: Variant[]; // attributes optional
       category: Category;
     };
   })[];
