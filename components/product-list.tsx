@@ -1,7 +1,6 @@
 // components/product-list.tsx
 "use client"
 
-import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import AddToCartButton from "@/components/ui/add-to-cart-button"
@@ -27,7 +26,6 @@ export default function ProductList({ products }: { products: any[] }) {
               >
                 <div className="w-full aspect-square flex items-center justify-center overflow-hidden rounded-md bg-gray-50">
                   {product.variants[0]?.images?.[0] ? (
-                    <motion.div layoutId={`product-image-${product.id}`}>
                       <Image
                         src={product.variants[0].images[0]}
                         alt={product.name}
@@ -35,7 +33,6 @@ export default function ProductList({ products }: { products: any[] }) {
                         height={200}
                         className="object-contain w-full h-full"
                       />
-                    </motion.div>
                   ) : (
                     <div className="text-gray-400 text-sm">No Image</div>
                   )}

@@ -12,7 +12,6 @@ import Providers from "../(dashboard)/admin/provider/tanstack"
 import { AppSidebarNew } from "@/components/ui/app-sidebar-new";
 import BottomNav from "@/components/ui/bottom-navigation";
 import ClientMuiProvider from "@/components/client-mui-provider";
-import FramerWrapper from "@/components/framer-wrapper";
 
 
 
@@ -74,9 +73,7 @@ export default function RootLayout({
                     {/* It is main content area */}
 
                       <div className="flex-1 border mb-16 md:mb-0 bg-white dark:bg-background-header overflow-auto pb-14 md:pb-0">
-                        <FramerWrapper>
                         {children}
-                        </FramerWrapper>
                       </div>
 
                       <Toaster richColors />
