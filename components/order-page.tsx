@@ -50,11 +50,18 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                   </p>
                 </div>
                 <div className="flex gap-2">
+                  {order.status === "delivered" && 
+                  <span className="text-xs mt-1 text-primary underline hidden sm:block">Write a Review</span>
+                  }
+
                   <Badge variant="secondary" className="capitalize">
                     {order.status}
                   </Badge>
+                {order.status === "delivered" && 
 
+                <span className="text-xs mt-1 sm:hidden text-primary underline">Write a Review</span>}
                 </div>
+
               </CardHeader>
 
               <CardContent className="space-y-4 px-4 sm:px-6">
@@ -104,7 +111,10 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                   <div>
                     <Drawer>
                       <DrawerTrigger asChild>
-                        <Button variant="outline" className="text-xs sm:text-sm h-6 sm:h-8 font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors">More</Button>
+                        <div>
+                        <Button variant="outline" className=
+                        "text-xs sm:text-sm h-6 sm:h-8 font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors">More</Button>
+                        </div>
                       </DrawerTrigger>
                       <DrawerContent className="p-4 sm:p-6 mb-10">
                         <DrawerHeader className="  mb-4">

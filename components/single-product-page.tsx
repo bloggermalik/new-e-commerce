@@ -92,7 +92,7 @@ export function SingleProductPage(product: Product) {
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="#FBBF24"
-                            className="w-5 h-5"
+                            className="w-4 h-4"
                         >
                             <path
                                 strokeLinecap="round"
@@ -115,39 +115,43 @@ export function SingleProductPage(product: Product) {
                             <span className="text-gray-500 line-through text-sm ">
                                 ₹{product.variants[0].costPrice}
                             </span>
-                           
+
                         </>
                     )}
-                  
+
                 </div>
-                   <p className="text-green-600 font-semibold text-md">
-                                {product.variants[0].costPrice &&
-                                    product.variants[0].sellPrice &&
-                                    Math.round(
-                                        ((product.variants[0].costPrice - product.variants[0].sellPrice) /
-                                            product.variants[0].costPrice) *
-                                        100
-                                    )}
-                                % off
-                            </p>
+                {/* Dicount percentage */}
+                <p className="text-green-600 font-semibold text-md">
+                    {product.variants[0].costPrice &&
+                        product.variants[0].sellPrice &&
+                        Math.round(
+                            ((product.variants[0].costPrice - product.variants[0].sellPrice) /
+                                product.variants[0].costPrice) *
+                            100
+                        )}
+                    % off
+                </p>
 
-                
-
-               
                 {/* Add to Cart / Buy Now Buttons */}
-                <div className="flex gap-3 pt-2">
+                <div className="flex pt-2">
                     <Button className="bg-primary text-white hover:bg-primary/90">
                         Add to Cart
                     </Button>
-                    <Button variant="outline">Buy Now</Button>
                 </div>
-            {/* Description */}
-                <p className="text-gray-600 leading-relaxed text-base">{product.description}</p>
-
+                {/* Product Description */}
+                <div>
+                <p className="text-lg font-medium mt-4 mb-2">Product Description</p>
+                <div
+                    className="text-gray-600 leading-relaxed text-base"
+                    dangerouslySetInnerHTML={{
+                        __html: product.description || "<p>No description available.</p>",
+                    }}
+                ></div>
+                </div>
                 {/* Comments Section */}
-                <div className="mt-6">
-                    <h2 className="text-xl font-semibold mb-2">Customer Reviews</h2>
-                    <div className="space-y-3 max-h-40 overflow-y-auto">
+                <div className="">
+                    <h2 className="text-lg font-medium mt-4 mb-2">Customer Reviews</h2>
+                    <div className=" max-h-40 overflow-y-auto">
 
                         <p className="text-gray-500 text-sm">No reviews yet.</p>
 

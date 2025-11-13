@@ -286,6 +286,21 @@ export const orderItems = pgTable("order_items", {
 });
 
 
+export const comments = pgTable("comments", {
+  id: uuid("id").primaryKey(),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  rating: integer("rating").notNull(),
+  comment: text("comment"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+})
+
+
 // 🔗 Relations (optional but recommended)
 export const orderRelations = relations(orders, ({ one, many }) => ({
   user: one(user, {
