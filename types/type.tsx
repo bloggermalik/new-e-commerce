@@ -49,6 +49,8 @@ export type AllOrder = Order & {
 
 // Product Types with Varients and Attributes
 
+export type  OnlyProduct = InferSelectModel<typeof products>;
+
 export type Product = InferSelectModel<typeof products> & {
   variants: (InferSelectModel<typeof productVariants> & {
     attributes: InferSelectModel<typeof variantAttributes>[];

@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/drawer"
 import { Button } from "./ui/button";
 import Link from "next/link";
+import ReviewDialog from "./review-dialog";
+
 
 
 
@@ -35,7 +37,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
       <h1 className="text-xl font-bold mb-6 mx-auto">My Orders</h1>
 
       <div className="space-y-6">
-        {usersOrders.map((order,index) => {
+        {usersOrders.map((order, index) => {
           if (order.status === "pending" || order.paymentStatus !== "paid") { return null; }
           const address = JSON.parse(order.shippingAddress);
           return (
@@ -50,17 +52,13 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  {order.status === "delivered" && 
-                  <span className="text-xs mt-1 text-primary underline hidden sm:block">Write a Review</span>
-                  }
+                
 
                   <Badge variant="secondary" className="capitalize">
                     {order.status}
                   </Badge>
-                {order.status === "delivered" && 
-
-                <span className="text-xs mt-1 sm:hidden text-primary underline">Write a Review</span>}
                 </div>
+
 
               </CardHeader>
 
@@ -78,22 +76,32 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                         >
                           <div className="flex items-start">
                             <Link href={`/product/${item.product?.id}`}>
-                            <Image
-                              src={imageUrl}
-                              alt={item.product?.name || "Product image"}
-                              width={40}
-                              height={40}
-                              className="w-10 h-10 object-cover rounded-md mr-4"
-                            />
+                              <Image
+                                src={imageUrl}
+                                alt={item.product?.name || "Product image"}
+                                width={40}
+                                height={40}
+                                className="w-10 h-10 object-cover rounded-md mr-4"
+                              />
                             </Link>
                             <div>
                               <Link href={`/product/${item.product?.id}`}>
-                              <p className="font-medium text-xs text-gray-800">
-                                {item.product?.name}
-                              </p>
+                                <p className="font-medium text-xs text-gray-800">
+                                  {item.product?.name}
+                                </p>
                               </Link>
                               <p className="text-xs text-gray-500">
                                 Qty: {item.quantity} × ₹{item.price}
+                                <ReviewDialog
+                                  orderId={order.id}
+                                  productId={item.productId}
+                                  userId={order.userId}
+                                  name={item.product?.name || ""}
+                                >
+                                  <button className="text-xs ml-2 text-primary underline cursor-pointer">
+                                    Write a Review
+                                  </button>
+                                </ReviewDialog>
                               </p>
                             </div>
                           </div>
@@ -112,8 +120,8 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                     <Drawer>
                       <DrawerTrigger asChild>
                         <div>
-                        <Button variant="outline" className=
-                        "text-xs sm:text-sm h-6 sm:h-8 font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors">More</Button>
+                          <Button variant="outline" className=
+                            "text-xs sm:text-sm h-6 sm:h-8 font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors">More</Button>
                         </div>
                       </DrawerTrigger>
                       <DrawerContent className="p-4 sm:p-6 mb-10">
@@ -191,7 +199,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                   </div>
                 </div>
               </CardContent>
-             {index !== usersOrders?.length - 1 && <Separator /> }
+              {index !== usersOrders?.length - 1 && <Separator />}
             </Card>
           );
         })}

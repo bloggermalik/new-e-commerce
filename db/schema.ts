@@ -287,7 +287,7 @@ export const orderItems = pgTable("order_items", {
 
 
 export const comments = pgTable("comments", {
-  id: uuid("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   productId: uuid("product_id")
     .notNull()
     .references(() => products.id, { onDelete: "cascade" }),

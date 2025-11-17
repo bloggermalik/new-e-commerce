@@ -3,11 +3,12 @@ import { db } from "@/db/drizzle";
 import { auth } from "@/lib/auth";
 import { asc, desc, eq, is, sql } from "drizzle-orm";
 import { cookies, headers } from "next/headers";
-import { user as users, categories, products, productVariants, variantAttributes, coupons, cart, cartItems, profile, orders, orderItems } from "@/db/schema";
+import { user as users, categories, products, productVariants, variantAttributes, coupons, cart, cartItems, profile, orders, orderItems, comments } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { Category, Coupon, NewCategory, NewCoupon, NewProduct, NewUser, Product, ProfileWithUser, Role, Session, User, UserWithProfile } from "@/types/type";
+import { Category, Coupon, NewCategory, NewCoupon, NewProduct, NewUser, OnlyProduct, Product, ProfileWithUser, Role, Session, User, UserWithProfile } from "@/types/type";
 import { can } from "@/lib/auth/check-permission";
+import { uuidv4 } from "zod";
 
 
 export const signIn = async (values: { email: string, password: string }) => {
@@ -310,6 +311,28 @@ export async function getCategoryById(id: string): Promise<Category | null> {
 
 
 // CRUD FOR PRODUCTS
+
+
+export async function getProductById(id: string): Promise<OnlyProduct | null> {
+  const session = await getSession();
+  if (!session) return null;
+
+  try {
+    const result = await db
+      .select()
+      .from(products)
+      .where(eq(products.id, id))
+      .limit(1);
+
+    return result[0] ?? null;
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return null;
+  }
+}
+
+
+
 
 
  export async function getProductBySlug(slug: string): Promise<Product | null> {
@@ -851,5 +874,31 @@ export async function updateOrderStatus(orderId: string, newStatus: "pending" | 
   } catch (error) {
     console.error("Failed to update order status:", error)
     throw new Error("Database update failed")
+  }
+}
+
+
+// Comment create
+
+export async function createComment(values: {
+  userId: string;
+  productId: string;
+  rating: number;
+  comment?: string;
+}) {
+  const session = await getSession();
+  if (!session) return { success: false, message: "Please Login First" };
+
+  try {
+    const comment = await db.insert(comments).values({
+      userId: values.userId ?? session.user.id,
+      productId: values.productId,
+      rating: values.rating ?? 0,
+      comment: values.comment ?? "",
+    });
+    return { success: true, message: "Comment created successfully" };
+  } catch (error) {
+    console.error("Create comment error:", error);
+    return { success: false, message: "Failed to create comment" };
   }
 }
