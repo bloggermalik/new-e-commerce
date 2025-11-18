@@ -1,7 +1,7 @@
 "use server"
 import { db } from "@/db/drizzle";
 import { auth } from "@/lib/auth";
-import { asc, desc, eq, is, sql } from "drizzle-orm";
+import { and, asc, desc, eq, is, sql } from "drizzle-orm";
 import { cookies, headers } from "next/headers";
 import { user as users, categories, products, productVariants, variantAttributes, coupons, cart, cartItems, profile, orders, orderItems, comments } from "@/db/schema";
 import { revalidatePath } from "next/cache";
@@ -900,5 +900,28 @@ export async function createComment(values: {
   } catch (error) {
     console.error("Create comment error:", error);
     return { success: false, message: "Failed to create comment" };
+  }
+}
+
+
+// Is User commented on the product
+
+export async function getUserCommentedProducts(): Promise<string[]> {
+  const session = await getSession();
+  if (!session?.user?.id) return [];
+
+  try {
+    const userComments = await db.query.comments.findMany({
+      where: eq(comments.userId, session.user.id),
+      columns: {
+        productId: true,
+      },
+    });
+
+    // return only productId array
+    return userComments.map((c) => c.productId);
+  } catch (error) {
+    console.error("Error fetching user commented products:", error);
+    return [];
   }
 }

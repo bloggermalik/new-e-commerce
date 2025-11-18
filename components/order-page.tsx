@@ -19,11 +19,19 @@ import {
 import { Button } from "./ui/button";
 import Link from "next/link";
 import ReviewDialog from "./review-dialog";
-
-
-
+import { useQuery } from "@tanstack/react-query";
+import { getUserCommentedProducts } from "@/server/user";
 
 export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] }) {
+
+  const { data: commentedProducts } = useQuery({
+  queryKey: ["user-commented-products"],
+  queryFn: () => getUserCommentedProducts(),
+  staleTime: 0, // always fresh
+});
+
+
+
   if (!usersOrders || usersOrders.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -52,7 +60,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                   </p>
                 </div>
                 <div className="flex gap-2">
-                
+
 
                   <Badge variant="secondary" className="capitalize">
                     {order.status}
@@ -67,6 +75,9 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                   <div className="bg-primary/9 rounded-lg p-2 sm:p-4">
                     {order.orderItems.map((item: OrderItem & { product: Product }) => {
                       const imageUrl = item?.product?.variants?.[0]?.images?.[0] || '/placeholder.png';
+
+                      const isCommented = commentedProducts?.includes(item.productId);
+
 
                       return (
 
@@ -92,16 +103,22 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                               </Link>
                               <p className="text-xs text-gray-500">
                                 Qty: {item.quantity} × ₹{item.price}
-                                <ReviewDialog
-                                  orderId={order.id}
-                                  productId={item.productId}
-                                  userId={order.userId}
-                                  name={item.product?.name || ""}
-                                >
-                                  <button className="text-xs ml-2 text-primary underline cursor-pointer">
-                                    Write a Review
-                                  </button>
-                                </ReviewDialog>
+                                {isCommented === false && (
+                                  <ReviewDialog
+                                    orderId={order.id}
+                                    productId={item.productId}
+                                    userId={order.userId}
+                                    name={item.product?.name || ""}
+                                  >
+                                    <button className="text-xs ml-2 text-primary underline cursor-pointer">
+                                      Write a Review
+                                    </button>
+                                  </ReviewDialog>
+                                )}
+
+                                {isCommented === true && (
+                                  <span className="ml-2 text-xs text-green-600">✓ Reviewed</span>
+                                )}
                               </p>
                             </div>
                           </div>
