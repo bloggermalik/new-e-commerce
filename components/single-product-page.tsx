@@ -1,14 +1,20 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Product } from "@/types/type"
+import { Truck } from "lucide-react"
+import { user } from "@/lib/auth/permission"
+import { isProductInCart } from "@/server/user"
+import AddToCartButton from "./ui/add-to-cart-button"
 
-export function SingleProductPage(product: Product) {
+export function SingleProductPage({product, userId}: {product:Product, userId?:string}) {
     const images = product.variants?.[0]?.images || ["/placeholder.png"]
     const [selectedImage, setSelectedImage] = useState(images[0])
     const [currentIndex, setCurrentIndex] = useState(0)
+
+
 
     // Handle swipe or next/prev navigation
     const handleNext = () => {
@@ -20,6 +26,24 @@ export function SingleProductPage(product: Product) {
         setCurrentIndex((prev) => (prev - 1 + images.length) % images.length)
         setSelectedImage(images[(currentIndex - 1 + images.length) % images.length])
     }
+
+
+     // 👉 NEW: cart check
+  const [inCart, setInCart] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    async function checkCart() {
+      const result = await isProductInCart(userId as string, product.id);
+      setInCart(result);
+    }
+
+    checkCart();
+  }, [userId, product.id]);
+
+  // 👉 Button text logic
+  const buttonLabel = inCart ? "Already in Cart" : "Add to Cart";
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-4 py-8 max-w-6xl mx-auto">
@@ -133,20 +157,26 @@ export function SingleProductPage(product: Product) {
                 </p>
 
                 {/* Add to Cart / Buy Now Buttons */}
-                <div className="flex pt-2">
-                    <Button className="bg-primary text-white hover:bg-primary/90">
-                        Add to Cart
-                    </Button>
+                <div className=" flex">
+                  
+                    <AddToCartButton productId={product.id} sellPrice={product.variants[0].sellPrice} className="justify-start w-[80px]" />
+                    
+
+                    {/* Free Delivery Badge */}
+                <div className="max-w-[220px] mt-3 flex items-center gap-1 bg-green-100 text-green-700 ml-3 sm:ml-4 px-3 sm:px-5 py-2 rounded-full text-xs font-medium">
+                    <Truck className="w-4 h-4" />
+                    <span>Free delivery above ₹900</span>
+                </div>
                 </div>
                 {/* Product Description */}
                 <div>
-                <p className="text-lg font-medium mt-4 mb-2">Product Description</p>
-                <div
-                    className="text-gray-600 leading-relaxed text-base"
-                    dangerouslySetInnerHTML={{
-                        __html: product.description || "<p>No description available.</p>",
-                    }}
-                ></div>
+                    <p className="text-lg font-medium mt-4 mb-2">Product Description</p>
+                    <div
+                        className="text-gray-600 leading-relaxed text-base"
+                        dangerouslySetInnerHTML={{
+                            __html: product.description || "<p>No description available.</p>",
+                        }}
+                    ></div>
                 </div>
                 {/* Comments Section */}
                 <div className="">

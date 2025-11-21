@@ -719,6 +719,25 @@ export async function deleteCartItem(cartItemId: string) {
 }
 
 
+export async function isProductInCart(userId: string, productId: string) {
+  const userCart = await db.query.cart.findFirst({
+    where: eq(cart.userId, userId),
+  });
+
+  if (!userCart) return false;
+
+  const item = await db.query.cartItems.findFirst({
+    where: and(
+      eq(cartItems.cartId, userCart.id),
+      eq(cartItems.productId, productId)
+    ),
+  });
+
+  return !!item;  // return boolean only
+}
+
+
+
 // Profile details
 
 export default async function getProfileByUserId(userId: string): Promise<ProfileWithUser | null> {

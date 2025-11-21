@@ -6,18 +6,24 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getErrorMessage } from "./get-error-message";
 import { Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
 
+interface AddToCartButtonProps {
+  productId: string;
+  sellPrice: number;
+  className?: string; // <-- allow custom tailwind
+}
 
-export default function AddToCartButton({ productId, sellPrice }: { productId: string; sellPrice: number }) {
+export default function AddToCartButton({ productId, sellPrice, className }: AddToCartButtonProps) {
     const queryClient = useQueryClient();
     const { mutate, isPending } = useMutation({
-         mutationFn: async () => {
+        mutationFn: async () => {
             const result = await addToCart(productId, sellPrice);
             if (!result.success) {
                 throw new Error(result.message); // <-- This makes toast.error work
             }
             return result;
-            },
+        },
         onMutate: async () => {
             // 1️⃣ Stop ongoing cart queries
             await queryClient.cancelQueries({ queryKey: ["cart"] });
@@ -52,33 +58,33 @@ export default function AddToCartButton({ productId, sellPrice }: { productId: s
             console.log("Product added to cart successfully");
         },
 
-         onError: (error: unknown, _vars, context) => {
+        onError: (error: unknown, _vars, context) => {
             if (context?.previousCart)
                 queryClient.setQueryData(["cart"], context.previousCart);
-                toast.error(getErrorMessage(error));
-            },
+            toast.error(getErrorMessage(error));
+        },
 
     }
 
     );
     console.log("Product added from cart is", productId, sellPrice);
     return (
-        <div className="flex justify-end w-full">
-        <Button
-  onClick={() => mutate()}
-  disabled={isPending}
-  variant="outline"
-  className="group mt-3 max-w-lg text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
->
-  {isPending ? (
-    "Added"
-  ) : (
-    <>
-      <Plus className="h-5 w-5 mr-1 text-primary group-hover:text-white transition-colors duration-200" />
-      Add
-    </>
-  )}
-</Button>
+        <div className={cn("flex justify-end w-full", className)}>
+            <Button
+                onClick={() => mutate()}
+                disabled={isPending}
+                variant="outline"
+                className="group mt-3 max-w-lg text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
+            >
+                {isPending ? (
+                    "Added"
+                ) : (
+                    <>
+                        <Plus className="h-5 w-5 mr-1 text-primary group-hover:text-white transition-colors duration-200" />
+                        Add
+                    </>
+                )}
+            </Button>
 
         </div>
     )

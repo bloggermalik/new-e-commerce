@@ -46,7 +46,7 @@ export default function ReviewDialog({ name, orderId, productId, userId, childre
         {children}
       </DialogTrigger>
 
-      <DialogContent className="max-w-md mx-4 sm:m-0 backdrop-blur-4xl ">
+      <DialogContent className="max-w-md  backdrop-blur-4xl ">
         <DialogHeader>
           <DialogTitle className="my-5">Do you like it?</DialogTitle>
           <Separator className="my-2" />
