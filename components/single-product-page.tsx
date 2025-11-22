@@ -50,6 +50,8 @@ export function SingleProductPage({
       images[(currentIndex - 1 + images.length) % images.length]
     );
   };
+  console.log("Product description is ",product.description)
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-4 py-8 max-w-6xl mx-auto">
@@ -170,15 +172,17 @@ export function SingleProductPage({
         </div>
         {/* Product Description */}
         <Separator className="my-6 bg-gray-200 w-full h-0.5" />
-        <div>
-          <p className="text-lg font-medium mb-2">Product Description</p>
+        <div className="prose max-w-none [&_p]:mb-4 [&_div]:mb-4 [&_p]:leading-relaxed [&_div]:leading-relaxed">
+                    <h2 className="text-lg font-medium mb-3">Product Description</h2>
+
           <div
-            className="text-gray-600 leading-relaxed text-base"
             dangerouslySetInnerHTML={{
               __html: product.description || "<p>No description available.</p>",
             }}
-          ></div>
+          />
         </div>
+
+
         {/* Comments Section */}
         <Separator className="my-6 bg-gray-200 w-full h-0.5" />
 
@@ -199,7 +203,7 @@ export function SingleProductPage({
               ? allProductComment.map((comment) => (
                 <div
                   key={comment.id}
-                  className="border rounded-lg p-4 shadow-sm hover:shadow transition-all"
+                  className=" rounded-lg p-4 border-b border-gray-200 transition-all"
                 >
                   {/* User + Rating */}
                   <div className="flex items-center justify-between mb-1">

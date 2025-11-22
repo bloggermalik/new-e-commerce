@@ -173,3 +173,7 @@
 
 /* Login Logout Avtar Button Arrow animation */
 
+.prose p:empty {
+  margin: 1rem 0;
+  display: block;
+}
