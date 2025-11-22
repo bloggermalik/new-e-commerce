@@ -1,14 +1,13 @@
 "use server"
 import { db } from "@/db/drizzle";
 import { auth } from "@/lib/auth";
-import { and, asc, desc, eq, is, sql } from "drizzle-orm";
+import { and, desc, eq,  sql } from "drizzle-orm";
 import { cookies, headers } from "next/headers";
 import { user as users, categories, products, productVariants, variantAttributes, coupons, cart, cartItems, profile, orders, orderItems, comments } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Category, Coupon, NewCategory, NewCoupon, NewProduct, NewUser, OnlyProduct, Product, ProfileWithUser, Role, Session, User, UserWithProfile } from "@/types/type";
 import { can } from "@/lib/auth/check-permission";
-import { uuidv4 } from "zod";
 
 
 export const signIn = async (values: { email: string, password: string }) => {
@@ -897,50 +896,4 @@ export async function updateOrderStatus(orderId: string, newStatus: "pending" | 
 }
 
 
-// Comment create
 
-export async function createComment(values: {
-  userId: string;
-  productId: string;
-  rating: number;
-  comment?: string;
-}) {
-  const session = await getSession();
-  if (!session) return { success: false, message: "Please Login First" };
-
-  try {
-    const comment = await db.insert(comments).values({
-      userId: values.userId ?? session.user.id,
-      productId: values.productId,
-      rating: values.rating ?? 0,
-      comment: values.comment ?? "",
-    });
-    return { success: true, message: "Comment created successfully" };
-  } catch (error) {
-    console.error("Create comment error:", error);
-    return { success: false, message: "Failed to create comment" };
-  }
-}
-
-
-// Is User commented on the product
-
-export async function getUserCommentedProducts(): Promise<string[]> {
-  const session = await getSession();
-  if (!session?.user?.id) return [];
-
-  try {
-    const userComments = await db.query.comments.findMany({
-      where: eq(comments.userId, session.user.id),
-      columns: {
-        productId: true,
-      },
-    });
-
-    // return only productId array
-    return userComments.map((c) => c.productId);
-  } catch (error) {
-    console.error("Error fetching user commented products:", error);
-    return [];
-  }
-}

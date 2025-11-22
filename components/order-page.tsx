@@ -20,7 +20,7 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import ReviewDialog from "./review-dialog";
 import { useQuery } from "@tanstack/react-query";
-import { getUserCommentedProducts } from "@/server/user";
+import { getUserCommentedProducts } from "@/server/comment";
 
 export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] }) {
 
@@ -103,7 +103,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                               </Link>
                               <p className="text-xs text-gray-500">
                                 Qty: {item.quantity} × ₹{item.price}
-                                {isCommented === false && (
+                                {(isCommented === false && order.status === "delivered") &&  (
                                   <ReviewDialog
                                     orderId={order.id}
                                     productId={item.productId}
@@ -116,7 +116,7 @@ export default function OrderPage({ usersOrders }: { usersOrders: UserOrder[] })
                                   </ReviewDialog>
                                 )}
 
-                                {isCommented === true && (
+                                {(isCommented === true && order.status === "delivered") && (
                                   <span className="ml-2 text-xs text-green-600">✓ Reviewed</span>
                                 )}
                               </p>

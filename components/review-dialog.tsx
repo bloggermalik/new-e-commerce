@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2, Star } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createComment, getProductById } from "@/server/user";
+import { createComment} from "@/server/comment";
 import { Separator } from "./ui/separator";
 import { toast } from "sonner";
 

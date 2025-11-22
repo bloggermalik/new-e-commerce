@@ -99,6 +99,17 @@ export interface CartItem {
 }
 
 
+export interface GetCartItem {
+  id: string;
+  productId: string;
+  quantity: number;
+  price: number;          
+  name: string;
+  description?: string;
+  image: string[];
+  optimistic?: boolean;
+}
+
 
 
 // Session Types
