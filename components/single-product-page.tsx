@@ -9,6 +9,7 @@ import AddToCartButton from "./ui/add-to-cart-button";
 import { useQuery } from "@tanstack/react-query";
 import { getCommentsByProductId } from "@/server/comment";
 import { Rating } from "@mui/material";
+import { Separator } from "@radix-ui/react-separator";
 
 export function SingleProductPage({
   product,
@@ -25,6 +26,15 @@ export function SingleProductPage({
     queryKey: ["comments", product.id],
     queryFn: async () => await getCommentsByProductId(product.id),
   });
+
+  const avgRating =
+    allProductComment && allProductComment.length > 0
+      ? (
+        allProductComment.reduce((sum, c) => sum + c.rating, 0) /
+        allProductComment.length
+      ).toFixed(1)
+      : "0";
+
 
   console.log("Comment for product is", allProductComment);
 
@@ -83,11 +93,10 @@ export function SingleProductPage({
                   setSelectedImage(img);
                   setCurrentIndex(i);
                 }}
-                className={`relative w-20 h-20 rounded-md overflow-hidden border-2 ${
-                  selectedImage === img
+                className={`relative w-20 h-20 rounded-md overflow-hidden border-2 ${selectedImage === img
                     ? "border-primary"
                     : "border-transparent"
-                }`}
+                  }`}
               >
                 <Image
                   src={img}
@@ -107,24 +116,17 @@ export function SingleProductPage({
         <h1 className="text-xl font-semibold">{product.name}</h1>
         {/* Rating Stars */}
         <div className="flex items-center gap-1">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <svg
-              key={i}
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="#FBBF24"
-              className="w-4 h-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.951a1 1 0 00.95.69h4.152c.969 0 1.371 1.24.588 1.81l-3.36 2.442a1 1 0 00-.364 1.118l1.286 3.951c.3.921-.755 1.688-1.54 1.118l-3.36-2.442a1 1 0 00-1.175 0l-3.36 2.442c-.784.57-1.838-.197-1.539-1.118l1.285-3.951a1 1 0 00-.364-1.118L2.973 9.378c-.783-.57-.38-1.81.588-1.81h4.152a1 1 0 00.95-.69l1.286-3.951z"
-              />
-            </svg>
-          ))}
-          <span className="text-gray-500 text-sm">.0</span>
+          <Rating
+            name="avg-rating"
+            value={Number(avgRating)}
+            precision={0.1}
+            readOnly
+            size="small"
+          />
+
+          <span className="text-xs text-gray-700">
+            {avgRating}  ({allProductComment?.length || 0} reviews)
+          </span>
         </div>
 
         {/* Price & Discount */}
@@ -147,7 +149,7 @@ export function SingleProductPage({
             Math.round(
               ((product.variants[0].costPrice - product.variants[0].sellPrice) /
                 product.variants[0].costPrice) *
-                100
+              100
             )}
           % off
         </p>
@@ -167,8 +169,9 @@ export function SingleProductPage({
           </div>
         </div>
         {/* Product Description */}
+        <Separator className="my-6 bg-gray-200 w-full h-0.5" />
         <div>
-          <p className="text-lg font-medium mt-4 mb-2">Product Description</p>
+          <p className="text-lg font-medium mb-2">Product Description</p>
           <div
             className="text-gray-600 leading-relaxed text-base"
             dangerouslySetInnerHTML={{
@@ -177,64 +180,66 @@ export function SingleProductPage({
           ></div>
         </div>
         {/* Comments Section */}
-        <div className="mt-6">
+        <Separator className="my-6 bg-gray-200 w-full h-0.5" />
+
+        <div className="">
           <h2 className="text-lg font-medium mb-3">Customer Reviews</h2>
 
-          <div className="max-h-56 overflow-y-auto space-y-4 pr-2">
+          <div className="overflow-y-auto space-y-4 pr-2">
             {/* Loading state */}
             {isLoading && (
-                <div className="flex justify-center">
-                    <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
-                </div>
-                )}
+              <div className="flex justify-center">
+                <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
+              </div>
+            )}
 
 
             {/* Comments */}
             {!isLoading && allProductComment && allProductComment.length > 0
               ? allProductComment.map((comment) => (
-                  <div
-                    key={comment.id}
-                    className="border rounded-lg p-4 shadow-sm hover:shadow transition-all"
-                  >
-                    {/* User + Rating */}
-                    <div className="flex items-center justify-between mb-1">
-                     
+                <div
+                  key={comment.id}
+                  className="border rounded-lg p-4 shadow-sm hover:shadow transition-all"
+                >
+                  {/* User + Rating */}
+                  <div className="flex items-center justify-between mb-1">
 
-                      <div className="flex items-center">
-                        <Rating
-                          name="read-only-rating"
-                          value={comment.rating}
-                          precision={0.5}
-                          readOnly
-                          size="small"
-                        />
-                        <span className="ml-2 text-sm text-gray-600">
-                          {comment.rating}/5
-                        </span>
-                      </div>
-                       <span className="text-gray-900 text-xs">
-                        -{comment.userName || "Anonymous"}
+
+                    <div className="flex items-center">
+                      <Rating
+                        name="read-only-rating"
+                        value={comment.rating}
+                        precision={0.5}
+                        readOnly
+                        size="small"
+                      />
+                      <span className="ml-2 text-sm text-gray-600">
+                        {comment.rating}/5
                       </span>
                     </div>
-
-                    {/* Comment text */}
-                    <p className="text-gray-700 text-sm leading-relaxed">
-                      {comment.comment}
-                    </p>
-
-                    {/* Created At */}
-                    {comment.createdAt && (
-                      <p className="text-gray-400 text-xs mt-2">
-                        {new Date(comment.createdAt).toLocaleDateString()}
-                      </p>
-                    )}
+                    <span className="text-gray-500 text-xs">
+                      -{comment.userName || "Anonymous"}
+                    </span>
                   </div>
-                ))
-              : !isLoading && (
-                  <p className="text-gray-500 text-sm">
-                    No reviews yet. Be the first to review this product!
+
+                  {/* Comment text */}
+                  <p className="text-gray-700 text-sm leading-relaxed">
+                    {comment.comment}
                   </p>
-                )}
+
+                  {/* Created At */}
+                  {comment.createdAt && (
+                    <p className="text-gray-400 text-xs mt-2">
+                      {new Date(comment.createdAt).toLocaleDateString()}
+                    </p>
+                  )}
+                </div>
+              ))
+              : !isLoading && (
+                <p className="text-gray-500 text-sm">
+                  No reviews yet. Be the first to review this product!
+                </p>
+              )}
           </div>
         </div>
       </div>

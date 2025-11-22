@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { and, desc, eq,  sql } from "drizzle-orm";
 import { cookies, headers } from "next/headers";
 import { user as users, categories, products, productVariants, variantAttributes, coupons, cart, cartItems, profile, orders, orderItems, comments } from "@/db/schema";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { Category, Coupon, NewCategory, NewCoupon, NewProduct, NewUser, OnlyProduct, Product, ProfileWithUser, Role, Session, User, UserWithProfile } from "@/types/type";
 import { can } from "@/lib/auth/check-permission";
@@ -438,7 +438,8 @@ export async function createProduct(values: NewProduct) {
 
       return productId;
     });
-
+    revalidateTag("products", "default")
+    
     return { success: true, productId: result };
   } catch (error) {
     console.error("Error creating product:", error);
@@ -503,6 +504,8 @@ export async function updateProduct(id: string, values: Partial<NewProduct>) {
     }
 
     const [product] = await tx.select().from(products).where(eq(products.id, id));
+    revalidateTag("products", "default")
+
     return product;
   });
 
