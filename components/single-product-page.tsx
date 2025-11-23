@@ -10,6 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getCommentsByProductId } from "@/server/comment";
 import { Rating } from "@mui/material";
 import { Separator } from "@radix-ui/react-separator";
+import { useSwipeable } from "react-swipeable";
+
 
 export function SingleProductPage({
   product,
@@ -21,6 +23,9 @@ export function SingleProductPage({
   const images = product.variants?.[0]?.images || ["/placeholder.png"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+ 
+
 
   const { data: allProductComment, isLoading } = useQuery({
     queryKey: ["comments", product.id],
@@ -50,6 +55,13 @@ export function SingleProductPage({
       images[(currentIndex - 1 + images.length) % images.length]
     );
   };
+
+   const handlers = useSwipeable({
+  onSwipedLeft: () => handleNext(),
+  onSwipedRight: () => handlePrev(),
+  preventScrollOnSwipe: true,
+  trackMouse: true, // allows mouse drag for desktop
+});
   console.log("Product description is ",product.description)
 
 
@@ -57,7 +69,10 @@ export function SingleProductPage({
     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-4 py-8 max-w-6xl mx-auto">
       {/* Left side — Image gallery */}
       <div className="flex flex-col items-center w-full space-y-4">
-        <div className="relative w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden">
+<div
+  {...handlers}
+  className="relative w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden"
+>
           <Image
             src={selectedImage}
             alt={product.name}
@@ -67,7 +82,7 @@ export function SingleProductPage({
           />
 
           {/* Navigation buttons for swipe/slide */}
-          {images.length > 1 && (
+          {/* {images.length > 1 && (
             <>
               <button
                 onClick={handlePrev}
@@ -82,7 +97,7 @@ export function SingleProductPage({
                 ▶
               </button>
             </>
-          )}
+          )} */}
         </div>
 
         {/* Thumbnail images */}
