@@ -18,12 +18,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChipsTag } from "@/components/chips-tag"
-import { DollarSign, Package, Plus, Settings, Tags, FileText, ListChecks, Trash, UploadCloudIcon, Loader2,  } from "lucide-react"
-import {  useState } from "react"
+import { DollarSign, Package, Plus, Settings, Tags, FileText, ListChecks, Trash, UploadCloudIcon, Loader2, } from "lucide-react"
+import { useState } from "react"
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
 import { uploadToImageKit } from "@/components/image-kit-upload"
 import { toast } from "sonner"
-import { createProduct} from "@/server/user"
+import { createProduct } from "@/server/user"
 import { Category } from "@/types/type"
 import AddNewCategory from "@/components/add-new-category"
 import Image from "next/image"
@@ -65,7 +65,7 @@ function VariantEditor({ index, form, removeVariant }: { index: number; form: Us
     })
 
     return (
-        <Card className="bg-muted/30 border border-border/40">
+        <Card className="bg-muted/10 border border-border/40">
             <CardHeader className="flex flex-row justify-between items-center py-3">
                 <CardTitle className="text-sm font-semibold flex items-center gap-2">
                     <ListChecks className="h-4 w-4 text-primary" /> Variant {index + 1}
@@ -160,7 +160,7 @@ function VariantEditor({ index, form, removeVariant }: { index: number; form: Us
                         name={`variants.${index}.isActive`}
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Status</FormLabel>
+                                <FormLabel>Variant Status</FormLabel>
                                 <Select
                                     onValueChange={(val) => field.onChange(val === "true")}
                                     defaultValue={field.value ? "true" : "false"}
@@ -171,8 +171,14 @@ function VariantEditor({ index, form, removeVariant }: { index: number; form: Us
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        <SelectItem value="true">Active</SelectItem>
-                                        <SelectItem value="false">Inactive</SelectItem>
+                                        <SelectItem value="true" className="flex items-center gap-2">
+                                            <span className="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                                            Active
+                                        </SelectItem>
+                                        <SelectItem value="false" className="flex items-center gap-2">
+                                            <span className="w-3 h-3 rounded-full bg-gray-400 inline-block"></span>
+                                            Inactive
+                                        </SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <FormMessage />
@@ -186,7 +192,7 @@ function VariantEditor({ index, form, removeVariant }: { index: number; form: Us
                     control={form.control}
                     name={`variants.${index}.images`}
                     render={({ field }) => {
-                     
+
 
                         const handleUpload = async () => {
                             if (!files.length) return;
@@ -355,10 +361,10 @@ function VariantEditor({ index, form, removeVariant }: { index: number; form: Us
     )
 }
 
-export default function AddNewProductForm( { categories }: { categories: Category[] } ) {
+export default function AddNewProductForm({ categories }: { categories: Category[] }) {
 
     // const [categories, setCategories] = useState<Category[]>([]);
-   
+
 
     const [loading, setLoading] = useState(false);
 
@@ -397,17 +403,17 @@ export default function AddNewProductForm( { categories }: { categories: Categor
         console.log("🔍 Form state:", form.formState)
     }
 
-//  useEffect(() => {
-//         async function fetchCategories() {
-//             try {
-//                 const category = await getCategory();
-//                 setCategories(category);
-//             } catch (error) {
-//                 toast.error("Failed to load categories: " + getErrorMessage(error));
-//             }
-//         }
-//         fetchCategories();
-//     }, []);
+    //  useEffect(() => {
+    //         async function fetchCategories() {
+    //             try {
+    //                 const category = await getCategory();
+    //                 setCategories(category);
+    //             } catch (error) {
+    //                 toast.error("Failed to load categories: " + getErrorMessage(error));
+    //             }
+    //         }
+    //         fetchCategories();
+    //     }, []);
 
     return (
         <div className="p-6 space-y-6 max-w-4xl w-full mx-auto">
@@ -439,32 +445,33 @@ export default function AddNewProductForm( { categories }: { categories: Categor
                                 </FormControl></FormItem>
                             )} />
                             <Separator className="md:col-span-2" />
-                            <FormField control={form.control} name="isActive" render={({ field }) => (
-                                <FormItem className="md:col-span-2">
-                                    <FormLabel>Status</FormLabel>
-                                    <Select onValueChange={(val) => field.onChange(val === "true")} defaultValue={field.value ? "true" : "false"}>
-                                        <FormControl>
-                                            <SelectTrigger className="!border !border-red-200 !focus:border-[var(--sidebar-primary)] focus:!ring-0 focus:!outline-none focus:!ring-offset-0 dark:focus:border-[var(--sidebar-primary)] dark:border-border dark:bg-muted font-sans placeholder:font-light placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
-                                            >
-                                                <SelectValue placeholder="Select status" />
-                                            </SelectTrigger>
-                                        </FormControl>
-
-                                        <SelectContent>
-                                            <SelectItem value="true" className="flex items-center gap-2">
-                                                <span className="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
-                                                Active
-                                            </SelectItem>
-                                            <SelectItem value="false" className="flex items-center gap-2">
-                                                <span className="w-3 h-3 rounded-full bg-gray-400 inline-block"></span>
-                                                Inactive
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
-
-                                </FormItem>
-                            )} />
                             <div className="flex items-end gap-4">
+
+                                <FormField control={form.control} name="isActive" render={({ field }) => (
+                                    <FormItem className="md:col-span-2">
+                                        <FormLabel>Product Status</FormLabel>
+                                        <Select onValueChange={(val) => field.onChange(val === "true")} defaultValue={field.value ? "true" : "false"}>
+                                            <FormControl>
+                                                <SelectTrigger className=""
+                                                >
+                                                    <SelectValue placeholder="Select status" />
+                                                </SelectTrigger>
+                                            </FormControl>
+
+                                            <SelectContent>
+                                                <SelectItem value="true" className="flex items-center gap-2">
+                                                    <span className="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                                                    Active
+                                                </SelectItem>
+                                                <SelectItem value="false" className="flex items-center gap-2">
+                                                    <span className="w-3 h-3 rounded-full bg-gray-400 inline-block"></span>
+                                                    Inactive
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+
+                                    </FormItem>
+                                )} />
                                 {/* Category Select */}
                                 <FormField
                                     control={form.control}
@@ -490,19 +497,11 @@ export default function AddNewProductForm( { categories }: { categories: Categor
                                     )}
                                 />
 
-                                {/* Separator */}
-       
-                                {/* Add New Category Button */}
-                                <div className="flex items-center">
-                                    <AddNewCategory />
-                                </div>
                             </div>
-
                             <FormField control={form.control} name="tags" render={({ field }) => (
-                                <FormItem className="md:col-span-2">
+                                <FormItem className="md:col-span-2 ">
                                     <FormLabel>Tags</FormLabel>
                                     <FormControl><ChipsTag value={field.value ?? []} onChange={field.onChange} /></FormControl>
-                                    <FormDescription>Add multiple tags</FormDescription>
                                 </FormItem>
                             )} />
                         </CardContent>

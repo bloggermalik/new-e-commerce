@@ -26,17 +26,17 @@ export function ChipsTag({ value, onChange }: TagsInputProps) {
 
   return (
     <div className="flex flex-col ">
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap gap-2">
         {value.map((tag) => (
           <span
             key={tag}
-            className="flex items-center gap-1 rounded-full bg-sidebar-primary hover:bg-sidebar-primary-foreground px-3 py-1 text-sm"
+            className="text-white  flex items-center gap-1 rounded-full bg-sidebar-primary text-sidebar-primary-foreground px-3 py-1 text-sm"
           >
             {tag}
             <button
               type="button"
               onClick={() => removeTag(tag)}
-              className="bg-sidebar-primary hover:bg-sidebar-primary-foreground"
+              className="text-white bg-sidebar-primary cursor-pointer"
             >
               <X className="h-4 w-4" />
             </button>
@@ -44,19 +44,10 @@ export function ChipsTag({ value, onChange }: TagsInputProps) {
         ))}
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 mt-2">
         <Input
-          className="
-                                                        border border-red-200
-                                                        focus:border-[var(--sidebar-primary)]
-                                                        focus:!ring-0 focus:!outline-none focus:!ring-offset-0
-                                                        dark:focus:border-[var(--sidebar-primary)]
-                                                        dark:border-border
-                                                        dark:bg-muted
-                                                        font-sans font-medium
-                                                        placeholder:font-light placeholder:text-muted-foreground
-                                                        disabled:cursor-not-allowed disabled:opacity-50
-                                                        "
+          className=""
+                                                      
           placeholder="Add a tag"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
@@ -67,7 +58,7 @@ export function ChipsTag({ value, onChange }: TagsInputProps) {
             }
           }}
         />
-      
+
       </div>
     </div>
   )

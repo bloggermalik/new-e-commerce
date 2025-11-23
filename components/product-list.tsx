@@ -8,7 +8,7 @@ import AddToCartButton from "@/components/ui/add-to-cart-button"
 export default function ProductList({ products }: { products: any[] }) {
   return (
     <div className="flex justify-center p-0 font-sans">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-6 justify-items-center w-full">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-6 justify-items-center max-w-7xl w-full">
         {products.map((product) => {
           const sellPrice = product.variants[0]?.sellPrice ?? 0
           const costPrice = product.variants[0]?.costPrice ?? 0
