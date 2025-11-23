@@ -45,30 +45,25 @@ export function SingleProductPage({
 
   console.log("Comment for product is", allProductComment);
 
-  const handleNext = () => {
-    setSlideDirection("left");
-    setTimeout(() => {
+const handleNext = () => {
   setCurrentIndex((prev) => (prev + 1) % images.length);
-  setSlideDirection(null);
-}, 300);
-  };
+};
 
-  const handlePrev = () => {
-    setSlideDirection("right");
-   setSlideDirection("right");
-setTimeout(() => {
+const handlePrev = () => {
   setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  setSlideDirection(null);
-}, 300);
+};
 
-  };
 
-  const handlers = useSwipeable({
-    onSwipedLeft: () => handleNext(),
-    onSwipedRight: () => handlePrev(),
-    preventScrollOnSwipe: true,
-    trackMouse: true, // allows mouse drag for desktop
-  });
+ const handlers = useSwipeable({
+  onSwipedLeft: handleNext,
+  onSwipedRight: handlePrev,
+  trackMouse: true,
+});
+
+useEffect(() => {
+  setSelectedImage(images[currentIndex]);
+}, [currentIndex, images]);
+
   console.log("Product description is ", product.description)
 
 
@@ -76,41 +71,28 @@ setTimeout(() => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-4 py-8 max-w-6xl mx-auto">
       {/* Left side — Image gallery */}
       <div className="flex flex-col items-center w-full space-y-4">
-        <div {...handlers} className="relative w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden">
+      <div
+  {...handlers}
+  className="relative w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden"
+>
   <div
-    className={`flex h-full w-[200%] transition-transform duration-300 ${
-      slideDirection === "left"
-        ? "-translate-x-1/2"
-        : slideDirection === "right"
-        ? "translate-x-1/2"
-        : "translate-x-0"
-    }`}
+    className="flex h-full transition-transform duration-300 ease-in-out"
+    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
   >
-    {/* CURRENT IMAGE */}
-    <div className="relative w-1/2 h-full">
-      <Image
-        src={images[currentIndex]}
-        alt="Current"
-        fill
-        className="object-contain"
-      />
-    </div>
-
-    {/* NEXT IMAGE */}
-    <div className="relative w-1/2 h-full">
-      <Image
-        src={
-          slideDirection === "left"
-            ? images[(currentIndex + 1) % images.length]
-            : images[(currentIndex - 1 + images.length) % images.length]
-        }
-        alt="Next"
-        fill
-        className="object-contain"
-      />
-    </div>
+    {images.map((img, i) => (
+      <div key={i} className="relative w-full h-full shrink-0">
+        <Image
+          src={img}
+          alt={`Image ${i}`}
+          fill
+          className="object-contain"
+        />
+      </div>
+    ))}
   </div>
 </div>
+
+
 
 
         {/* Thumbnail images */}
@@ -119,10 +101,8 @@ setTimeout(() => {
             {images.map((img, i) => (
               <button
                 key={i}
-                onClick={() => {
-                  setSelectedImage(img);
-                  setCurrentIndex(i);
-                }}
+                onClick={() => setCurrentIndex(i)}
+
                 className={`relative w-8 h-8 rounded-md overflow-hidden border-2 ${selectedImage === img
                   ? "border-primary"
                   : "border-transparent"
