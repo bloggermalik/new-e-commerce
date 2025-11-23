@@ -45,24 +45,43 @@ export function SingleProductPage({
 
   console.log("Comment for product is", allProductComment);
 
-const handleNext = () => {
-  setCurrentIndex((prev) => (prev + 1) % images.length);
-};
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  };
 
-const handlePrev = () => {
-  setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-};
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
 
 
- const handlers = useSwipeable({
-  onSwipedLeft: handleNext,
-  onSwipedRight: handlePrev,
+ const [isDragging, setIsDragging] = useState(false);
+const [dragX, setDragX] = useState(0);
+
+const handlers = useSwipeable({
+  onSwiping: (e) => {
+    setIsDragging(true);
+    setDragX(-e.deltaX); // move with finger
+  },
+  onSwipedLeft: () => {
+    setIsDragging(false);
+    setDragX(0);
+    handleNext();
+  },
+  onSwipedRight: () => {
+    setIsDragging(false);
+    setDragX(0);
+    handlePrev();
+  },
+  onSwiped: () => {
+    setIsDragging(false);
+    setDragX(0);
+  },
   trackMouse: true,
 });
 
-useEffect(() => {
-  setSelectedImage(images[currentIndex]);
-}, [currentIndex, images]);
+  useEffect(() => {
+    setSelectedImage(images[currentIndex]);
+  }, [currentIndex, images]);
 
   console.log("Product description is ", product.description)
 
@@ -71,13 +90,17 @@ useEffect(() => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-4 py-8 max-w-6xl mx-auto">
       {/* Left side — Image gallery */}
       <div className="flex flex-col items-center w-full space-y-4">
-      <div
+       <div
   {...handlers}
   className="relative w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden"
 >
   <div
-    className="flex h-full transition-transform duration-300 ease-in-out"
-    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+    className={`flex h-full ease-in-out ${
+      isDragging ? "duration-0" : "duration-300"
+    }`}
+    style={{
+      transform: `translateX(calc(-${currentIndex * 100}% + ${dragX}px))`,
+    }}
   >
     {images.map((img, i) => (
       <div key={i} className="relative w-full h-full shrink-0">
@@ -91,6 +114,7 @@ useEffect(() => {
     ))}
   </div>
 </div>
+
 
 
 
