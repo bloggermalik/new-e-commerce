@@ -48,25 +48,19 @@ export function SingleProductPage({
   const handleNext = () => {
     setSlideDirection("left");
     setTimeout(() => {
-      setCurrentIndex((prev) => {
-        const nextIndex = (prev + 1) % images.length;
-        setSelectedImage(images[nextIndex]);
-        return nextIndex;
-      });
-      setSlideDirection(null);
-    }, 200);
+  setCurrentIndex((prev) => (prev + 1) % images.length);
+  setSlideDirection(null);
+}, 300);
   };
 
   const handlePrev = () => {
     setSlideDirection("right");
-    setTimeout(() => {
-      setCurrentIndex((prev) => {
-        const prevIndex = (prev - 1 + images.length) % images.length;
-        setSelectedImage(images[prevIndex]);
-        return prevIndex;
-      });
-      setSlideDirection(null);
-    }, 200);
+   setSlideDirection("right");
+setTimeout(() => {
+  setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  setSlideDirection(null);
+}, 300);
+
   };
 
   const handlers = useSwipeable({
@@ -82,22 +76,42 @@ export function SingleProductPage({
     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-4 py-8 max-w-6xl mx-auto">
       {/* Left side — Image gallery */}
       <div className="flex flex-col items-center w-full space-y-4">
-        <div
-          {...handlers}
-          className="relative w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden"
-        >
-          <Image
-            src={selectedImage}
-            alt={product.name}
-            fill
-            className={`object-contain transition-all duration-200
-  ${slideDirection === "left" ? "-translate-x-full opacity-0" : ""}
-  ${slideDirection === "right" ? "translate-x-full opacity-0" : ""}
-/`}
+        <div {...handlers} className="relative w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden">
+  <div
+    className={`flex h-full w-[200%] transition-transform duration-300 ${
+      slideDirection === "left"
+        ? "-translate-x-1/2"
+        : slideDirection === "right"
+        ? "translate-x-1/2"
+        : "translate-x-0"
+    }`}
+  >
+    {/* CURRENT IMAGE */}
+    <div className="relative w-1/2 h-full">
+      <Image
+        src={images[currentIndex]}
+        alt="Current"
+        fill
+        className="object-contain"
+      />
+    </div>
 
-            priority
-          />
-        </div>
+    {/* NEXT IMAGE */}
+    <div className="relative w-1/2 h-full">
+      <Image
+        src={
+          slideDirection === "left"
+            ? images[(currentIndex + 1) % images.length]
+            : images[(currentIndex - 1 + images.length) % images.length]
+        }
+        alt="Next"
+        fill
+        className="object-contain"
+      />
+    </div>
+  </div>
+</div>
+
 
         {/* Thumbnail images */}
         {images.length > 1 && (
