@@ -23,8 +23,10 @@ export function SingleProductPage({
   const images = product.variants?.[0]?.images || ["/placeholder.png"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState<"left" | "right" | null>(null);
 
- 
+
+
 
 
   const { data: allProductComment, isLoading } = useQuery({
@@ -43,61 +45,58 @@ export function SingleProductPage({
 
   console.log("Comment for product is", allProductComment);
 
-  // Handle swipe or next/prev navigation
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-    setSelectedImage(images[(currentIndex + 1) % images.length]);
+    setSlideDirection("left");
+    setTimeout(() => {
+      setCurrentIndex((prev) => {
+        const nextIndex = (prev + 1) % images.length;
+        setSelectedImage(images[nextIndex]);
+        return nextIndex;
+      });
+      setSlideDirection(null);
+    }, 200);
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-    setSelectedImage(
-      images[(currentIndex - 1 + images.length) % images.length]
-    );
+    setSlideDirection("right");
+    setTimeout(() => {
+      setCurrentIndex((prev) => {
+        const prevIndex = (prev - 1 + images.length) % images.length;
+        setSelectedImage(images[prevIndex]);
+        return prevIndex;
+      });
+      setSlideDirection(null);
+    }, 200);
   };
 
-   const handlers = useSwipeable({
-  onSwipedLeft: () => handleNext(),
-  onSwipedRight: () => handlePrev(),
-  preventScrollOnSwipe: true,
-  trackMouse: true, // allows mouse drag for desktop
-});
-  console.log("Product description is ",product.description)
+  const handlers = useSwipeable({
+    onSwipedLeft: () => handleNext(),
+    onSwipedRight: () => handlePrev(),
+    preventScrollOnSwipe: true,
+    trackMouse: true, // allows mouse drag for desktop
+  });
+  console.log("Product description is ", product.description)
 
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-4 py-8 max-w-6xl mx-auto">
       {/* Left side — Image gallery */}
       <div className="flex flex-col items-center w-full space-y-4">
-<div
-  {...handlers}
-  className="relative w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden"
->
+        <div
+          {...handlers}
+          className="relative w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden"
+        >
           <Image
             src={selectedImage}
             alt={product.name}
             fill
-            className="object-contain transition-all duration-300"
+            className={`object-contain transition-all duration-200
+  ${slideDirection === "left" ? "-translate-x-full opacity-0" : ""}
+  ${slideDirection === "right" ? "translate-x-full opacity-0" : ""}
+/`}
+
             priority
           />
-
-          {/* Navigation buttons for swipe/slide */}
-          {/* {images.length > 1 && (
-            <>
-              <button
-                onClick={handlePrev}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white rounded-full p-2 shadow"
-              >
-                ◀
-              </button>
-              <button
-                onClick={handleNext}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white rounded-full p-2 shadow"
-              >
-                ▶
-              </button>
-            </>
-          )} */}
         </div>
 
         {/* Thumbnail images */}
@@ -110,9 +109,9 @@ export function SingleProductPage({
                   setSelectedImage(img);
                   setCurrentIndex(i);
                 }}
-                className={`relative w-20 h-20 rounded-md overflow-hidden border-2 ${selectedImage === img
-                    ? "border-primary"
-                    : "border-transparent"
+                className={`relative w-8 h-8 rounded-md overflow-hidden border-2 ${selectedImage === img
+                  ? "border-primary"
+                  : "border-transparent"
                   }`}
               >
                 <Image
@@ -188,7 +187,7 @@ export function SingleProductPage({
         {/* Product Description */}
         <Separator className="my-6 bg-gray-200 w-full h-0.5" />
         <div className="prose max-w-none [&_p]:mb-4 [&_div]:mb-4 [&_p]:leading-relaxed [&_div]:leading-relaxed">
-                    <h2 className="text-lg font-medium mb-3">Product Description</h2>
+          <h2 className="text-lg font-medium mb-3">Product Description</h2>
 
           <div
             dangerouslySetInnerHTML={{
