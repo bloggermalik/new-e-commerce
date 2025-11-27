@@ -112,6 +112,7 @@ export default function AddToCartButton({
           </>
         )}
       </Button>
+    
     </div>
   );
 }

@@ -35,27 +35,33 @@ export default function BottomNav() {
             <Link
               key={name}
               href={href}
-              className={`relative flex flex-col items-center justify-center gap-1 text-xs transition-all ${
-                active
-                  ? "text-blue-600 dark:text-blue-400 font-semibold"
-                  : "text-gray-500 dark:text-gray-400"
-              }`}
+              className={`relative flex flex-col items-center justify-center gap-1 text-xs transition-all ${active
+                ? "text-blue-600 dark:text-blue-400 font-semibold"
+                : "text-gray-500 dark:text-gray-400"
+                }`}
             >
               <div className="relative">
                 <Icon
-                  className={`w-6 h-6 transition-colors ${
-                    active
-                      ? "stroke-blue-600 dark:stroke-blue-400"
-                      : "stroke-gray-500 dark:stroke-gray-400"
-                  }`}
+                  className={`w-6 h-6 transition-colors ${active
+                    ? "stroke-blue-600 dark:stroke-blue-400"
+                    : "stroke-gray-500 dark:stroke-gray-400"
+                    }`}
                   strokeWidth={2}
                 />
                 {/* ✅ Badge for Cart */}
                 {isCart && cartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">
-                    {cartCount}
+                  <span className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+
+                    {/* Ping animation */}
+                    {(!active && pathname !== "/checkout") && (
+                      <span className="absolute -inset-0.25 animate-[ping_1s_linear_infinite] rounded-full bg-red-400 opacity-75"></span>
+                    )}
+
+                    {/* Count */}
+                    <span className="relative">{cartCount}</span>
                   </span>
                 )}
+
               </div>
               <span>{name}</span>
             </Link>
