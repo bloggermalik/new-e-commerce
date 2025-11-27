@@ -87,10 +87,21 @@ export default function AddToCartButton({
   return (
     <div className={cn("flex justify-end w-full", className)}>
       <Button
-        onClick={() => mutate()}
-        disabled={isPending}
+        onClick={() => {
+            if (isAlreadyInCart) {
+              toast.info("Product already in cart. Go to Cart.");
+              return; // ❌ Stop here — do NOT call mutate()
+            }
+            mutate(); // ✅ Only run for new items
+          }}
+
+        disabled={isPending }
         variant="outline"
-        className="group mt-3 max-w-lg text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors"
+        className={
+          cn("group mt-3 max-w-lg text-sm font-semibold border-primary text-primary bg-white hover:bg-primary hover:text-white transition-colors",
+            isAlreadyInCart && "opacity-50 hover:bg-white hover:text-primary"
+          )
+        }
       >
         {isAlreadyInCart ? (
           "Added"

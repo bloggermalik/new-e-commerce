@@ -24,7 +24,6 @@ export function SingleProductPage({
   const images = product.variants?.[0]?.images || ["/placeholder.png"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [slideDirection, setSlideDirection] = useState<"left" | "right" | null>(null);
 
 
 
@@ -72,7 +71,7 @@ export function SingleProductPage({
     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-4 py-8 max-w-7xl mx-auto">
       {/* Left side — Image gallery */}
       <div className="flex flex-col items-center w-full space-y-4">
-        {/* <div
+        <div
           {...handlers}
           className="relative w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden"
         >
@@ -91,12 +90,12 @@ export function SingleProductPage({
               </div>
             ))}
           </div>
-        </div> */}
+        </div>
 
- <ProductImageGallery
+        {/* <ProductImageGallery
           images={images || []}
           productName={product.name}
-        />
+        /> */}
 
 
 
