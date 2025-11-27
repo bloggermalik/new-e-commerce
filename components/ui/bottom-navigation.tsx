@@ -49,7 +49,7 @@ export default function BottomNav() {
                   strokeWidth={2}
                 />
                 {/* ✅ Badge for Cart */}
-                {isCart && cartCount > 0 && (
+                {isCart && cartCount > 0 && pathname !== "/checkout" && pathname !== "/cart" && (
                   <span className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
 
                     {/* Ping animation */}
@@ -58,7 +58,7 @@ export default function BottomNav() {
                     )}
 
                     {/* Count */}
-                    <span className="relative">{cartCount}</span>
+                    { ( <span className="relative">{cartCount}</span>)}
                   </span>
                 )}
 
