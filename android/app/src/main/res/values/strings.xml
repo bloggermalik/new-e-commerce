@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Lenzoa</string>
+    <string name="title_activity_main">Lenzoa</string>
+    <string name="package_name">com.lenzoa.app</string>
+    <string name="custom_url_scheme">com.lenzoa.app</string>
+</resources>
