@@ -11,7 +11,6 @@ import { getCommentsByProductId } from "@/server/comment";
 import { Rating } from "@mui/material";
 import { Separator } from "@radix-ui/react-separator";
 import { useSwipeable } from "react-swipeable";
-import ProductImageGallery from "@/app/(store)/products/[slug]/ProductImageGallery";
 
 
 export function SingleProductPage({
@@ -21,7 +20,7 @@ export function SingleProductPage({
   product: Product;
   userId?: string;
 }) {
-  const images = product.variants?.[0]?.images || ["/placeholder.png"];
+  const images = product?.variants?.[0]?.images || ["/placeholder.png"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -30,7 +29,7 @@ export function SingleProductPage({
 
 
   const { data: allProductComment, isLoading } = useQuery({
-    queryKey: ["comments", product.id],
+    queryKey: ["comments", product?.id],
     queryFn: async () => await getCommentsByProductId(product.id),
   });
 
@@ -64,7 +63,7 @@ export function SingleProductPage({
     setSelectedImage(images[currentIndex]);
   }, [currentIndex, images]);
 
-  console.log("Product description is ", product.description)
+  console.log("Product description is ", product?.description)
 
 
   return (
@@ -127,7 +126,7 @@ export function SingleProductPage({
       {/* Right side — Product Info */}
       <div className="flex flex-col space-y-2 text-gray-900 font-sans">
         {/* Product Name */}
-        <h1 className="text-xl font-semibold">{product.name}</h1>
+        <h1 className="text-xl font-semibold">{product?.name}</h1>
         {/* Rating Stars */}
         <div className="flex items-center gap-1">
           <Rating
@@ -146,23 +145,23 @@ export function SingleProductPage({
         {/* Price & Discount */}
         <div className="flex items-center gap-1">
           <span className="text-2xl font-semibold ">
-            ₹{product.variants?.[0]?.sellPrice ?? "N/A"}
+            ₹{product?.variants?.[0]?.sellPrice ?? "N/A"}
           </span>
-          {product.variants?.[0]?.costPrice && (
+          {product?.variants?.[0]?.costPrice && (
             <>
               <span className="text-gray-500 line-through text-sm ">
-                ₹{product.variants[0].costPrice}
+                ₹{product?.variants?.[0]?.costPrice}
               </span>
             </>
           )}
         </div>
         {/* Dicount percentage */}
         <p className="text-green-600 font-semibold text-md">
-          {product.variants[0].costPrice &&
-            product.variants[0].sellPrice &&
+          {product?.variants?.[0]?.costPrice &&
+            product?.variants?.[0]?.sellPrice &&
             Math.round(
-              ((product.variants[0].costPrice - product.variants[0].sellPrice) /
-                product.variants[0].costPrice) *
+              ((product?.variants?.[0]?.costPrice - product?.variants?.[0]?.sellPrice) /
+                product?.variants?.[0]?.costPrice) *
               100
             )}
           % off
@@ -171,8 +170,8 @@ export function SingleProductPage({
         {/* Add to Cart / Buy Now Buttons */}
         <div className=" flex">
           <AddToCartButton
-            productId={product.id}
-            sellPrice={product.variants[0].sellPrice}
+            productId={product?.id}
+            sellPrice={product?.variants?.[0]?.sellPrice}
             className="justify-start w-[80px]"
           />
 
@@ -189,7 +188,7 @@ export function SingleProductPage({
 
           <div
             dangerouslySetInnerHTML={{
-              __html: product.description || "<p>No description available.</p>",
+              __html: product?.description || "<p>No description available.</p>",
             }}
           />
         </div>

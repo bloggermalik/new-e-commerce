@@ -63,7 +63,7 @@ export function LoginForm({
       setIsGoogleLoading(true) // Set loading state before Google sign-in
        await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/dashboard"
+        callbackURL: "/"
       });
       toast.success("Please wait...")
     } catch (error) {
@@ -79,7 +79,7 @@ export function LoginForm({
     console.log("values", signInData)
     if(signInData.success){
       toast.success("Login successful")
-      router.push("/dashboard")
+      router.push("/")
     } else {
       toast.error("Login failed")
     }

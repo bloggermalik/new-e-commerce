@@ -22,7 +22,7 @@ export async function LoginLogoutButton() {
       {session?.user ? (
         <LogoutButton />
       ) : (
-        <Link href="/login">
+        <Link href="/login" className='mr-2'>
             <User2 />
         </Link>
       )}

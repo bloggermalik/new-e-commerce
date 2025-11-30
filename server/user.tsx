@@ -336,8 +336,7 @@ export async function getProductById(id: string): Promise<OnlyProduct | null> {
 
  export async function getProductBySlug(slug: string): Promise<Product | null> {
 
-  const session = await getSession();
-  if (!session) return null;
+  // const session = await getSession();
   const product = await db.query.products.findFirst({
     where: eq(products.slug, slug),
     with: {
