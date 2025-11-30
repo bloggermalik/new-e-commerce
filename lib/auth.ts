@@ -51,6 +51,26 @@ export const auth = betterAuth({
         .where(eq(schema.user.id, user.id));
     },
   },
+  session: {
+    // Persistent login for 30 days
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 24 * 60 * 60,
+  },
+
+  advanced: {
+    // 🔥 Official recommended way:
+    // Secure cookies ONLY on real HTTPS site
+    useSecureCookies: process.env.NODE_ENV === "production",
+
+    cookies: {
+      session_token: {
+        attributes: {
+          // 🔥 MUST include path for proper persistence
+          path: "/",
+        },
+      },
+    },
+  },
   
     plugins: [ adminPlugin({
             defaultRole: "regular",
