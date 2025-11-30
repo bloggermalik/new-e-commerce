@@ -18,7 +18,7 @@ const config: CapacitorConfig = {
   webDir: 'public',
    server: {
     url: 'https://new-e-commerce-five.vercel.app',
-    cleartext: true
+    cleartext: false
   }
 };
 

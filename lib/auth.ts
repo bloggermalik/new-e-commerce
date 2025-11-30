@@ -1,7 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db/drizzle"; // your drizzle instance
-import { nextCookies } from "better-auth/next-js";
 import { schema } from "@/db/schema"
 import { eq } from "drizzle-orm";
 import { admin as adminPlugin } from "better-auth/plugins"
@@ -57,20 +56,19 @@ export const auth = betterAuth({
     updateAge: 24 * 60 * 60,
   },
 
-  advanced: {
-    // 🔥 Official recommended way:
-    // Secure cookies ONLY on real HTTPS site
-    useSecureCookies: process.env.NODE_ENV === "production",
-
-    cookies: {
-      session_token: {
-        attributes: {
-          // 🔥 MUST include path for proper persistence
-          path: "/",
-        },
+ advanced: {
+  useSecureCookies: true, // fine because you use HTTPS
+  cookies: {
+    session_token: {
+      attributes: {
+        path: "/",
+        sameSite: "None",
+        secure: true
       },
     },
   },
+},
+
   
     plugins: [ adminPlugin({
             defaultRole: "regular",
@@ -81,5 +79,5 @@ export const auth = betterAuth({
                 user,
                 moderator,
             }
-        }),nextCookies()]
+        })]
 });
