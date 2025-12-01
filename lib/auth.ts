@@ -84,7 +84,7 @@
 // });
 
 
-import { betterAuth } from "better-auth";
+import { betterAuth, jwt } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db/drizzle";
 import { nextCookies } from "better-auth/next-js";
@@ -135,11 +135,13 @@ export const auth = betterAuth({
     },
   },
   session: {
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
     updateAge: 24 * 60 * 60,
-    cookieCache: {
-      enabled: true,
-      maxAge: 5 * 60 // 5 minutes cache
+   cookie: {
+      name: "__Secure-better-auth.session_token",
+      sameSite: "none",
+      secure: true
     }
   },
 
