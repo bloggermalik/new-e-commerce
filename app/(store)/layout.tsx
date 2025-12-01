@@ -12,7 +12,6 @@ import Providers from "../(dashboard)/admin/provider/tanstack"
 import { AppSidebarNew } from "@/components/ui/app-sidebar-new";
 import BottomNav from "@/components/ui/bottom-navigation";
 import ClientMuiProvider from "@/components/client-mui-provider";
-import HideSplashScreen from "@/lib/capacitor-splash-hider";
 
 
 
@@ -51,8 +50,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Providers>
-
-            <HideSplashScreen />
 
             <ClientMuiProvider>
               <div className=" mx-auto max-w-[1920px]">
