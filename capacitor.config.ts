@@ -5,9 +5,9 @@ const config: CapacitorConfig = {
   appName: 'Lenzoa',
   plugins: {
     SplashScreen: {
-      launchShowDuration: 1500,        // No auto hide
+      launchAutoHide: false,
       splashImmersive: true,
-      backgroundColor: "#ffffff",   // White background
+      backgroundColor: "#f01212ff",   // White background
       androidScaleType: "CENTER_CROP",
       showSpinner: true,
       androidSpinnerStyle: "large",
