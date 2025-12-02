@@ -429,4 +429,5 @@ export const schema = {
   orderItems,
   orderRelations,
   orderItemsRelations,
+  jwks,
 };
