@@ -13,6 +13,7 @@ import { AppSidebarNew } from "@/components/ui/app-sidebar-new";
 import BottomNav from "@/components/ui/bottom-navigation";
 import ClientMuiProvider from "@/components/client-mui-provider";
 import InitJwtBridge from "@/components/InitJwtBridge";
+import HideSplash from "@/components/hide-splash";
 
 
 
@@ -51,6 +52,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Providers>
+            <HideSplash />
             <InitJwtBridge />
 
             <ClientMuiProvider>
