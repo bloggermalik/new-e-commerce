@@ -6,6 +6,7 @@ import { schema } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { admin as adminPlugin } from "better-auth/plugins";
 import { ac, admin, user, moderator } from "@/lib/auth/permission";
+import { jwt } from "better-auth/plugins"
 
 export type UserType = {
   id: string;
@@ -54,7 +55,6 @@ export const auth = betterAuth({
     maxAge: 30 * 24 * 60 * 60,
     updateAge: 24 * 60 * 60,
   },
-
   advanced: {
     useSecureCookies: true, // fine because you use HTTPS
     cookies: {
@@ -67,8 +67,8 @@ export const auth = betterAuth({
       },
     },
   },
-
   plugins: [
+    jwt(),
     adminPlugin({
       defaultRole: "regular",
       adminRoles: ["admin", "superadmin"],
