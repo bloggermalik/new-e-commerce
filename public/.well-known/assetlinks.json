@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.lenzoa.com",
+      "sha256_cert_fingerprints": [
+        "D0:FD:F6:05:1D:C2:F6:BD:1B:CF:EA:C0:C3:63:25:37:E9:7B:15:1A:F8:08:25:95:DC:C0:E7:7D:0A:0D:08:5A"
+      ]
+    }
+  }
+]
