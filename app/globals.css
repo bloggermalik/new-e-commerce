@@ -62,7 +62,7 @@
   --card-foreground: #111827; /* same as text-gray-900 */
   --popover: #ffffff; /* same as bg-white */
   --popover-foreground: #111827; /* same as text-gray-900 */
-  --primary: #2563eb; /* same as bg-blue-600 */
+  --primary: #2563eb; 
   --primary-foreground: #ffffff; /* same as text-white */
   --secondary: #f3f4f6; /* same as bg-gray-100 */
   --secondary-foreground: oklch(0.21 0.006 285.885);

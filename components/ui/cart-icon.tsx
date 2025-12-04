@@ -18,7 +18,7 @@ export default function CartIcon() {
         <Link href="/cart">
             <div className="relative flex gap-1  md:mr-16 mr-4 item-center hidden md:flex">
                 <ShoppingBag className="h-7 w-7" />
-                <span className="text-lg text-muted-foreground dark:text-white hidden md:block">Cart</span>
+                <span className="text-lg text-white text-muted-foreground dark:text-white hidden md:block">Cart</span>
                   {cartCount > 0 && (
                   <span className="absolute -top-3 -left-3 bg-red-500 text-white text-[12px] font-bold rounded-full px-1.5 py-0.5">
                     {cartCount}
